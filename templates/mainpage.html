@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mainpage.css') }}">
+<script defer src="{{ url_for('static', filename='js/mainpage.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div>Mainpage test</div>
+{% endblock %}
