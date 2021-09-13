@@ -6,5 +6,15 @@
 {% endblock %}
 
 {% block content %}
-    <div>Signup test</div>
+<div>Signup test</div>
+<img class="logo" src="{{ url_for('static', filename='img/pepewine.png') }}" alt="pepe">
+<div class="signup-form-wrap">
+    <div class="signup-form">
+        <input class="input" type="text" placeholder="닉네임을 입력해 주세요">
+        <input class="input" type="text" placeholder="이메일을 입력해 주세요">
+        <input class="input" type="text" placeholder="패스워드를 입력해 주세요">
+        <input class="input" type="text" placeholder="패스워드를 다시 입력해 주세요">
+        <button class="button is-medium is-fullwidth">Sign up</button>
+    </div>
+</div>
 {% endblock %}

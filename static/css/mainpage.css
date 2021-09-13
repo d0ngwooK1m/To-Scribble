@@ -1,0 +1,23 @@
+
+
+.navbar-theme {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.drawing-hide-button-wrap {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 30px;
+}
+
+.card-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.card {
+    width: 20%;
+    height: 10%;
+    margin: 10px
+}

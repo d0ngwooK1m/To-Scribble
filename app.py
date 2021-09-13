@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
-# 메인, 로그인, 회원가입, 마이페이지 연결
+# 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
 def mainpage():
     return render_template('mainpage.html')
@@ -18,6 +19,8 @@ def signuppage():
 @app.route('/mypage/')
 def mypage():
     return render_template('mypage.html')
+
+# API 기능 여기서 작성해주세요!
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

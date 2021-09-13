@@ -1,0 +1,15 @@
+.navbar-theme {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.card-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.card {
+    width: 20%;
+    height: 10%;
+    margin: 10px
+}
