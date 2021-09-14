@@ -1,18 +1,44 @@
-.logo {
-    display: block;
-    margin-left: 45%;
-    margin-bottom: 10px;
-}
+
+/*.logo {*/
+/*    display: block;*/
+/*    margin-left: 40%;*/
+/*    margin-bottom: 20px;*/
+/*}*/
 
 .login-form-wrap {
     display: flex;
     justify-content: center;
+    text-align: center;
+    margin-top: 250px;
+
 }
 
 .login-form {
     width: 50%;
+    text-align: center;
 }
 
 .input {
     margin-bottom: 10px;
+}
+.left{
+
+    width: 50%;
+    float: left;
+
+    /*background: green;*/
+}
+.right{
+    width: 50%;
+    float: right;
+    /*background: yellow;*/
+}
+
+.vl {
+  border-left: 3px solid black;
+  height: 400px;
+  position: absolute;
+  left: 40%;
+  margin-left: -3px;
+  top: 100px;
 }
