@@ -43,6 +43,40 @@
             😎
         </button>
     </div>
+    <div class="diary-wrap">
+        <div class="diary">
+            <canvas width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
+
+            <div class="diary-content">
+                <input class="input is-small diary-date" type="date" placeholder="날짜 선택">
+
+                <div class="select">
+                    <select>
+                        <option>Select dropdown</option>
+                        <option>🌞</option>
+                        <option>☂</option>
+                        <option>🌀</option>
+                        <option>❄</option>
+                    </select>
+                </div>
+                <input class="input is-small diary-comment" type="text" placeholder="30자로 내 기분을 표현해보세요" maxlength="30">
+                <div class="radio-color-wrap">
+                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                    <button style="background-color: red" class="red-button color-button"></button>
+                    <button style="background-color: blue" class="red-button color-button"></button>
+                    <button style="background-color: green" class="red-button color-button"></button>
+                    <button style="background-color: black" class="red-button color-button"></button>
+                </div>
+                <div class="tool-wrap">
+                    <button class="tool-button">Pen</button>
+                    <button class="tool-button">Eraser</button>
+                    <button class="tool-button">Clear</button>
+                    <button class="tool-button">Image</button>
+                </div>
+                <button class="diary-submit-button">Submit</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="card-wrapper">

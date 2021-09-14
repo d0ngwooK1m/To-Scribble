@@ -1,14 +1,12 @@
-
+.drawing-hide-button-wrap {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 70px;
+}
 
 .navbar-theme {
     font-size: 2rem;
     font-weight: bold;
-}
-
-.drawing-hide-button-wrap {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 30px;
 }
 
 .card-wrapper {
@@ -20,4 +18,43 @@
     width: 20%;
     height: 10%;
     margin: 10px
+}
+
+.diary-wrap {
+    display: flex;
+}
+
+.diary {
+    display: none;
+    justify-content: space-between;
+    width: 100%;
+    height: 400px;
+    background-color: aqua;
+    margin: 0 3.5%;
+}
+
+canvas {
+    background-color: #eee;
+}
+
+.diary-date {
+    width: 400px;
+}
+
+.diary-comment {
+    width: 500px;
+}
+
+.slidecontainer {
+    display: flex;
+}
+
+.color-button {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.diary-submit-button {
+    width: 100px;
 }
