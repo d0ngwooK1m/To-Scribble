@@ -3,6 +3,10 @@
     margin-left: 40%;
     margin-bottom: 10px;
 }
+.loadfile {
+    display: block;
+    margin: auto;
+}
 
 .signup-form-wrap {
     display: flex;
