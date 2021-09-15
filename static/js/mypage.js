@@ -1,28 +1,16 @@
+
 $(document).ready(function () {
-    showUser();
-    // deletepost();
+    // showUser();
     // showmypost();
 });
 
 function showUser() {
     $.ajax({
         type: 'GET',
-        url: '/mypage/userinfo?sample_give=email',
+        url: '/mypage/userinfo',
         data: {},
         success: function (response) {
-            alert(response['msg']);
             // window.location.reload()
-        }
-    });
-}
-function deleteMypage(postId) {
-    $.ajax({
-        type: 'POST',
-        url: '/mypage/delete',
-        data: {postId_give: postId},
-        success: function (response) {
-            alert(response['msg']);
-            window.location.reload()
         }
     });
 }
@@ -63,7 +51,7 @@ function showmypost() {
                     <button class="button is-danger">
                         Delete post
                     </button>
-    
+
                         </div>
                     </div>
                 </div>`
@@ -75,3 +63,18 @@ function showmypost() {
 }
 
 
+function deleteMypage(postId) {
+    $.ajax({
+        type: 'GET',
+        url: '/mypage/delete?postId_give=postId',
+        data: {},
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload()
+        }
+    });
+}
+function log_out() {
+    $.removeCookie('mytoken', {path: '/'});
+    window.location.href = "/"
+}

@@ -16,18 +16,33 @@ UPLOAD_FOLDER = 'static/uploads/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+def loginCheck():
+    if request.cookies.get('mytoken') is not None:
+        return True
+    else:
+        return False
+
 # 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
 def mainpage():
-    token_receive = request.cookies.get('mytoken')
-    try:
+    # token_receive = request.cookies.get('mytoken')
+    # try:
+    #     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    #     user_info = db.users.find_one({"email": payload['email']})
+    #     all_post = list(db.posts.find({}, {'_id': False}))
+    #     all_post.reverse()
+    #     return render_template('mainpage.html',all_post=all_post, logincheck=loginCheck())
+    # except jwt.exceptions.DecodeError:
+    #     return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
+    if request.cookies.get('mytoken') is not None:
+        token_receive = request.cookies.get('mytoken')
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"email": payload['email']})
-        all_post = list(db.posts.find({}, {'_id': False}))
-        all_post.reverse()
-        return render_template('mainpage.html',all_post=all_post)
-    except jwt.exceptions.DecodeError:
-        return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
+    else:
+        user_info = {'nick' : 'guest'}
+    all_post = list(db.posts.find({}, {'_id': False}))
+    all_post.reverse()
+    return render_template('mainpage.html', userinfo=user_info, all_post=all_post, logincheck=loginCheck())
 
 
 @app.route('/userlogin/')
@@ -41,12 +56,23 @@ def signuppage():
 
 @app.route('/mypage/')
 def mypage():
+    # token_receive = request.cookies.get('mytoken')
+    # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    # my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
+    # my_posts.reverse()
+    # # return jsonify({'my_posts': my_posts})
+    # return render_template('mypage.html',my_posts=my_posts)
     token_receive = request.cookies.get('mytoken')
-    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
-    my_posts.reverse()
-    # return jsonify({'my_posts': my_posts})
-    return render_template('mypage.html',my_posts=my_posts)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"email": payload['email']})
+        my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
+        my_posts.reverse()
+        return render_template('mypage.html',my_posts=my_posts, userinfo=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('fail', msg="로그인 시간 만료"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
 
 ## 로그인 HTML을 주는 기능
 # API 기능 여기서 작성해주세요!
@@ -88,10 +114,11 @@ def api_signuppage():
     extension = file.filename.split('.')[-1] # ex) jpg
     save_to = f'static/img/{email_receive}.{extension}'  #email이라는 이름은 img에 저장되는 이름일뿐
     file.save(save_to)
+    img_url = f'../static/img/{email_receive}.{extension}'
 
     #db 저장하기
     doc = {
-        'image': save_to,
+        'image': img_url,
         'nickname': nickname_receive,
         'pw': pw_hash,
         'email': email_receive,
@@ -127,9 +154,18 @@ def api_loginpage():
 
 @app.route('/mypage/userinfo', methods=['GET'])
 def userinfo_mypage():
-    # email_receive = request.args.get('sample_give')
-    user_info = db.users.find_one({'email': 'sample_give'}, {'_id': False})
-    return jsonify({'msg': user_info})
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"email": payload['email']})
+
+        return render_template('mypage.html', userinfo=user_info)
+
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
+
+
+#    return jsonify({'msg': user_info})
 
 
 
