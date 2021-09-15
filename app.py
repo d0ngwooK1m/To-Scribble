@@ -1,9 +1,13 @@
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-
 from pymongo import MongoClient
+import random
 
 app = Flask(__name__)
+
+# DB
+client = MongoClient('localhost', 27017)
+db = client.To_Scribble
 
 # 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
@@ -23,6 +27,24 @@ def mypage():
     return render_template('mypage.html')
 
 # API 기능 여기서 작성해주세요!
+
+# 일기 포스팅(등록) API
+@app.route('/mainpage/post', methods=['POST'])
+def posting():
+    result = request.get_json()
+    # print(result["comment"], result["weather"], result["date"])
+    post = {
+        "postId": random.random(),
+        "email": result["email"],
+        "img": result["img"],
+        "date": result["date"],
+        "weather": result["weather"],
+        "comment": result["comment"],
+    }
+
+    db.users.insert_one(post)
+
+    return jsonify({"result": "일기를 저장했습니다!"})
 
 @app.route('/mypage/userinfo', methods=['GET'])
 def userinfo_mypage():
