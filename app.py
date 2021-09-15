@@ -11,6 +11,9 @@ SECRET_KEY = 'secret'
 client = MongoClient('localhost', 27017)
 db = client.To_Scribble
 
+UPLOAD_FOLDER = 'static/uploads/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
@@ -40,7 +43,6 @@ def mypage():
 ## 로그인 HTML을 주는 기능
 # API 기능 여기서 작성해주세요!
 
-
 # 일기 포스팅(등록) API
 @app.route('/mainpage/post', methods=['POST'])
 def posting():
@@ -56,21 +58,27 @@ def posting():
     }
 
     db.posts.insert_one(post)
-
     return jsonify({"result": "일기를 저장했습니다!"})
 
 # 회원가입 API
 @app.route('/api/usersignup/',methods = ['POST'])
 def api_signuppage():
-    nickname_receive = request.form['nickname_give']
+    nickname_receive = request.form['nickname_give'] # request.form.get()을 사용하면 값이 None일 때도 출력할 수 있다.
     email_receive = request.form['email_give']
     pw_receive = request.form['pw_give']
     pw_check_receive = request.form['pw_check_give']
     # 비밀번호는 hashlib을 이용하여 해시함수로 변환하기
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+    # 사진파일
+    file = request.files["file_give"]
+    extension = file.filename.split('.')[-1] # ex) jpg
+    save_to = f'static/img/{email_receive}.{extension}'  #email이라는 이름은 img에 저장되는 이름일뿐
+    file.save(save_to)
+
     #db 저장하기
     doc = {
-        'nick': nickname_receive,
+        'image': save_to,
+        'nickname': nickname_receive,
         'pw': pw_hash,
         'email': email_receive,
         'pw_check': pw_check_receive
@@ -95,7 +103,7 @@ def api_loginpage():
     if result is not None:
         payload = {
             'email': email_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1) #만료시간
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=100) #만료시간
         }
         token = jwt.encode(payload, SECRET_KEY , algorithm='HS256')#decode('utf-8')
         return jsonify({'result': 'success', 'token': token})
@@ -107,7 +115,6 @@ def api_loginpage():
 def userinfo_mypage():
     # email_receive = request.args.get('sample_give')
     user_info = db.users.find_one({'email': 'sample_give'}, {'_id': False})
-
     return jsonify({'msg': user_info})
 
 
