@@ -65,9 +65,9 @@ function showmypost() {
 
 function deleteMypage(postId) {
     $.ajax({
-        type: 'GET',
-        url: '/mypage/delete?postId_give=postId',
-        data: {},
+        type: 'POST',
+        url: '/mypage/delete',
+        data: {postId_give: postId},
         success: function (response) {
             alert(response['msg']);
             window.location.reload()
