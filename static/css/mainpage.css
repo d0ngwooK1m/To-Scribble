@@ -11,10 +11,12 @@
 
 .card-wrapper {
     display: flex;
+    flex-wrap : wrap;
     justify-content: space-evenly;
 }
 
 .card {
+    flex-shrink: 0;
     width: 20%;
     height: 10%;
     margin: 10px
