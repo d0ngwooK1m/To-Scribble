@@ -1,5 +1,5 @@
 $(document).ready(function () {
-                showAllpost();
+                // showAllpost();
             });
 
 let checkOpened = false;
@@ -29,31 +29,32 @@ function showAllpost() {
                     success: function (response) {
                         let posts = response['all_post']
                         console.log(posts)
-
-                            for (let i = 0; i < posts.length; i++) {
-                                let imageurl = posts[i]['image']
-                                let text = posts[i]['text']
+                            for (let i = posts.length-1; i >= 0; i--)
+                            {
+                                //<img className="is-rounded" src="../static/img/pepegood.jpg">
+                                let imageurl = posts[i]['img']
+                                let text = posts[i]['comment']
                                 let date = posts[i]['date']
                                 let weather = posts[i]['weather']
 
                                 let temp_html = `
-                            <div class="card">
-                                <div class="card-image">
-                                    <figure class="image is-4by3">
-                                        <img src=${imageurl} >
-                                    </figure>
-                                </div>
-                                <div class="card-content">
-                                    <div class="content">
-                                        ${text}
-                                        <br>
-                                        <time datetime="2016-1-1">${date}</time>
-                                        <br>
-                                        <weather>${weather}</weather>
+                                    <div class="card">
+                                        <div class="card-image">
+                                            <figure class="image is-4by3">
+                                                <img src="${imageurl}" >
+                                            </figure>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                ${text}
+                                                <br>
+                                                <time datetime="2016-1-1">${date}</time>
+                                                <br>
+                                                <weather>${weather}</weather>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            `
+                                    `
                                 $('#card-box').append(temp_html)
                             }
                     }
@@ -126,17 +127,15 @@ clearBtn.addEventListener('click', () => {
 
 //일기 포스팅(등록) API
 const url = canvas.toDataURL('image/png');
-const img_give = new Image();
-img_give.src = url;
 const date_give = document.querySelector('.diary-date');
 let weather_give = document.getElementById('weather-select');
 // weather_give = weather_give.options[weather_give.selectedIndex].value;
 const comment_give = document.querySelector('.diary-comment');
 
 submitBtn.addEventListener('click', () => {
+    const url = canvas.toDataURL('image/png');
     const postData = {
-        email: "",
-        img: img_give.src,
+        img: url,
         date: date_give.value,
         weather: weather_give.options[weather_give.selectedIndex].value,
         comment: comment_give.value,

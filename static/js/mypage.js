@@ -1,6 +1,6 @@
 $(document).ready(function () {
     showUser();
-    showmypost();
+    // showmypost();
 });
 function showUser() {
     $.ajax({

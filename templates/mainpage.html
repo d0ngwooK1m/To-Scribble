@@ -83,8 +83,23 @@
 </div>
 
 <div class="card-wrapper" id="card-box">
+{% for post in all_post %}
+    <div class="card">
+        <div class="card-image">
+            <figure class="image is-4by3">
+                <img src={{ post.img }} >
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="content">
+                {{post.comment}}
+                <br>
+                <time datetime="2016-1-1">{{post.date}}</time>
+                <br>
+                <weather>{{post.weather}}</weather>
+            </div>
+        </div>
+    </div>
+{% endfor %}
 </div>
-
-
-
 {% endblock %}

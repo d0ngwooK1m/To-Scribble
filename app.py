@@ -4,6 +4,7 @@ import random
 import jwt
 import hashlib
 import datetime
+import urllib.request
 
 app = Flask(__name__)
 SECRET_KEY = 'secret'
@@ -17,9 +18,11 @@ db = client.To_Scribble
 def mainpage():
     token_receive = request.cookies.get('mytoken')
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY , algorithms=['HS256'])
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"email": payload['email']})
-        return render_template('mainpage.html')
+        all_post = list(db.posts.find({}, {'_id': False}))
+        all_post.reverse()
+        return render_template('mainpage.html',all_post=all_post)
     except jwt.exceptions.DecodeError:
         return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
 
@@ -35,7 +38,12 @@ def signuppage():
 
 @app.route('/mypage/')
 def mypage():
-    return render_template('mypage.html')
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
+    my_posts.reverse()
+    # return jsonify({'my_posts': my_posts})
+    return render_template('mypage.html',my_posts=my_posts)
 
 ## 로그인 HTML을 주는 기능
 # API 기능 여기서 작성해주세요!
@@ -44,17 +52,23 @@ def mypage():
 # 일기 포스팅(등록) API
 @app.route('/mainpage/post', methods=['POST'])
 def posting():
+    token_receive = request.cookies.get('mytoken')
     result = request.get_json()
-    # print(result["comment"], result["weather"], result["date"])
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    imageurl = result["img"]
+    postID = str(random.random())[3:]
+    imagepath = f'../static/postimg/{postID}.jpg'
+    urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
+    ###img 저장 부분###
     post = {
-        "postId": random.random(),
-        "email": result["email"],
-        "img": result["img"],
+        "postId": postID, # split 해서 2번째 자리부터 가져오기 나중에처리.
+        "email": payload["email"],
+        "img": imagepath,
         "date": result["date"],
         "weather": result["weather"],
         "comment": result["comment"],
     }
-
     db.posts.insert_one(post)
 
     return jsonify({"result": "일기를 저장했습니다!"})
@@ -117,18 +131,18 @@ def delete_mypage():
     db.posts.delete_one({'postId': postId_receive})
     return jsonify({'msg': '삭제 완료!'})
 
-@app.route('/mypage/showmypost', methods=['GET'])
-def show_mypost():
-    sample_receive = request.args.get('sample_give')
-    my_posts = list(db.posts.find({'num': sample_receive}, {'_id': False}))
-    print(my_posts)
-    return jsonify({'my_posts': my_posts})
+#@app.route('/mypage/showmypost', methods=['GET'])
+# def show_mypost():
+#     sample_receive = request.args.get('sample_give')
+#     my_posts = list(db.posts.find({'num': sample_receive}, {'_id': False}))
+#     print(my_posts)
+#     return jsonify({'my_posts': my_posts})
 
 
-@app.route('/allpost', methods=['GET'])
-def show_allpost():
-    all_post = list(db.posts.find({}, {'_id': False}))
-    return jsonify({'all_post': all_post})
+# @app.route('/allpost', methods=['GET'])
+# def show_allpost():
+#     all_post = list(db.posts.find({}, {'_id': False}))
+#     return jsonify({'all_post': all_post})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
