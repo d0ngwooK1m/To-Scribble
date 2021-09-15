@@ -3,6 +3,37 @@
     font-weight: bold;
 }
 
+#navbar-button {
+    margin-left: 0;
+}
+
+#mypage-box{
+    width: 100%;
+    margin: auto;
+    padding: 3% 7%;
+}
+#profile-box {
+    display: flex;
+    justify-content: flex-start;
+    /*width: 90%;*/
+    width: 60%;
+    margin: 1% 5% 0% 5%;
+}
+
+#profile-image {
+    margin-left: 30px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 45px;
+}
+
+.hero-body {
+    padding-bottom: 1%;
+}
+
 .card-wrapper {
     display: flex;
     justify-content: space-evenly;

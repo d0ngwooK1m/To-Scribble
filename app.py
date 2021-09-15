@@ -108,22 +108,21 @@ def api_loginpage():
         return jsonify({'result': 'fail', 'msg': '이메일/비밀번호가 일치하지 않습니다.'})
 
 
-
 @app.route('/mypage/userinfo', methods=['GET'])
 def userinfo_mypage():
-    sample_receive = request.args.get('sample_give')
-    print(sample_receive)
+    # email_receive = request.args.get('sample_give')
+    user_info = db.users.find_one({'email': 'sample_give'}, {'_id': False})
 
-    return jsonify({'msg': '이 요청은 GET!'})
+    return jsonify({'msg': user_info})
+
 
 @app.route('/mypage/delete', methods=['GET'])
 def delete_mypage():
-    sample_receive = request.args.get('sample_give')
-    print(sample_receive)
-    # postId_receive = request.
-    # db.mypage.delete_one({'name': postId_receive})
-    return jsonify({'msg': '삭제 완료!'})
+    postId_receive = request.args.get('postId_give')
 
+    db.posts.delete_one({'postId': postId_receive})
+
+    return jsonify({'msg': '삭제 완료!'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
