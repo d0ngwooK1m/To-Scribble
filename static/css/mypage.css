@@ -37,10 +37,15 @@
 .card-wrapper {
     display: flex;
     justify-content: space-evenly;
+    flex-wrap : wrap;
 }
 
 .card {
+    flex-shrink: 0;
     width: 20%;
     height: 10%;
     margin: 10px
+}
+.content_text {
+    height: 30px;
 }

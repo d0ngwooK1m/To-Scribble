@@ -2,20 +2,16 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient
 import random
-
-
 import jwt
 import hashlib
 import datetime
 
 app = Flask(__name__)
-
 SECRET_KEY = 'secret'
 #app.secret_key = 'tmxmflddmfhdkanrjsk'
-
-
 client = MongoClient('localhost', 27017)
 db = client.To_Scribble
+
 
 # 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
@@ -119,10 +115,21 @@ def userinfo_mypage():
 @app.route('/mypage/delete', methods=['GET'])
 def delete_mypage():
     postId_receive = request.args.get('postId_give')
-
     db.posts.delete_one({'postId': postId_receive})
-
     return jsonify({'msg': '삭제 완료!'})
+
+@app.route('/mypage/showmypost', methods=['GET'])
+def show_mypost():
+    sample_receive = request.args.get('sample_give')
+    my_posts = list(db.posts.find({'num': sample_receive}, {'_id': False}))
+    print(my_posts)
+    return jsonify({'my_posts': my_posts})
+
+
+@app.route('/allpost', methods=['GET'])
+def show_allpost():
+    all_post = list(db.posts.find({}, {'_id': False}))
+    return jsonify({'all_post': all_post})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

@@ -1,37 +1,39 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
-<script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <div class="navbar-item navbar-theme">To-Scribble</div>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-end">
-            <a class="navbar-item" href="/">
-                Mainpage
-            </a>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <div class="navbar-item navbar-theme">To-Scribble</div>
         </div>
 
-        <div class="navbar-end" id="navbar-button">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <!--                    <a class="button is-primary" href="/usersignup/">-->
-                    <!--                        <strong>Sign up</strong>-->
-                    <!--                    </a>-->
-                    <a class="button is-light" href="/userlogin/">
-                        Log out
-                    </a>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-end">
+                <a class="navbar-item" href="/">
+                    Mainpage
+                </a>
+            </div>
+
+            <div class="navbar-end" id="navbar-button">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <!--                    <a class="button is-primary" href="/usersignup/">-->
+                        <!--                        <strong>Sign up</strong>-->
+                        <!--                    </a>-->
+                        <a class="button is-light" href="/userlogin/">
+                            Log out
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-</nav>
+
+    </nav>
 
     <div class="box" id="mypage-box">
         <section class="hero">
@@ -64,97 +66,12 @@
                 </div>
             </div>
         </div>
-        <div class="hero-body">
+    </div>
+    <div class="hero-body">
         <p class="subtitle">
             ▶ 나의 기록
         </p>
-        </div>
-        <div class="card-wrapper">
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Phasellus nec iaculis mauris.
-                        <br>
-                        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        <weather>☀</weather>
-
-                        <button onclick="deleteMypage()" class="delete"></button>
-                    </div>
-                </div>
-                <button class="button is-danger">
-                    Delete post
-                </button>
-            </div>
-
-
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Phasellus nec iaculis mauris.
-                        <br>
-                        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        <weather>☀</weather>
-                        <button onclick="deleteMypage()" class="delete"></button>
-                    </div>
-                </div>
-                <button class="button is-danger">
-                    Delete post
-                </button>
-            </div>
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Phasellus nec iaculis mauris.
-                        <br>
-                        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        <weather>☀</weather>
-                        <button onclick="deleteMypage()" class="delete"></button>
-                    </div>
-                </div>
-                <button class="button is-danger">
-                    Delete post
-                </button>
-            </div>
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Phasellus nec iaculis mauris.
-                        <br>
-                        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        <weather>☀</weather>
-                        <button onclick="deleteMypage()" class="delete"></button>
-                    </div>
-                </div>
-                <button class="button is-danger">
-                    Delete post
-                </button>
-            </div>
-        </div>
     </div>
+    <div class="card-wrapper">
     </div>
-
 {% endblock %}
