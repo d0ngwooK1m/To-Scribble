@@ -1,15 +1,15 @@
 $(document).ready(function () {
-                showmypost();
-            });
-
+    showUser();
+    showmypost();
+});
 function showUser() {
     $.ajax({
         type: 'GET',
-        url: '/mypage/delete?sample_give=샘플데이터',
+        url: '/mypage/userinfo?sample_give=email',
         data: {},
         success: function (response) {
             alert(response['msg']);
-            window.location.reload()
+            // window.location.reload()
         }
     });
 }
@@ -61,10 +61,10 @@ function showmypost() {
 }
 
 
-function deleteMypage() {
+function deleteMypage(postId) {
     $.ajax({
         type: 'GET',
-        url: '/mypage/delete?sample_give=샘플데이터',
+        url: '/mypage/delete?postId_give=postId',
         data: {},
         success: function (response) {
             alert(response['msg']);
