@@ -4,7 +4,7 @@ function makeInfo() {
     let pw = $('#pw-id').val()
     let pw_check = $('#pw-check-id').val()
 
-    let file = $('#file-id')[0].files[0]
+    let file = $('#profile_pt')[0].files[0]
     let form_data = new FormData()
     form_data.append("file_give", file)
     form_data.append("nickname_give", nick)

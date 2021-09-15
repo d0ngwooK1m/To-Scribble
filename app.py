@@ -132,11 +132,14 @@ def userinfo_mypage():
     return jsonify({'msg': user_info})
 
 
-@app.route('/mypage/delete', methods=['GET'])
+
+@app.route('/mypage/delete', methods=['POST'])
 def delete_mypage():
-    postId_receive = request.args.get('postId_give')
+    postId_receive = request.form['postId_give']
     db.posts.delete_one({'postId': postId_receive})
     return jsonify({'msg': '삭제 완료!'})
+
+
 
 #@app.route('/mypage/showmypost', methods=['GET'])
 # def show_mypost():
