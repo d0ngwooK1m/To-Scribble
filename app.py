@@ -114,10 +114,11 @@ def api_signuppage():
     extension = file.filename.split('.')[-1] # ex) jpg
     save_to = f'static/img/{email_receive}.{extension}'  #email이라는 이름은 img에 저장되는 이름일뿐
     file.save(save_to)
+    img_url = f'../static/img/{email_receive}.{extension}'
 
     #db 저장하기
     doc = {
-        'image': save_to,
+        'image': img_url,
         'nickname': nickname_receive,
         'pw': pw_hash,
         'email': email_receive,
@@ -153,9 +154,18 @@ def api_loginpage():
 
 @app.route('/mypage/userinfo', methods=['GET'])
 def userinfo_mypage():
-    # email_receive = request.args.get('sample_give')
-    user_info = db.users.find_one({'email': 'sample_give'}, {'_id': False})
-    return jsonify({'msg': user_info})
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"email": payload['email']})
+
+        return render_template('mypage.html', userinfo=user_info)
+
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
+
+
+#    return jsonify({'msg': user_info})
 
 
 @app.route('/mypage/delete', methods=['GET'])
