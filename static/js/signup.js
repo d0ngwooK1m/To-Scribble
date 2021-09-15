@@ -71,12 +71,14 @@ function previewImage(targetObj, View_area) {
 			img.id = "prev_" + View_area;
 			img.classList.add("obj");
 			img.file = file;
-			img.style.display = 'block';
-			img.style.marginLeft = '40%';
-			img.style.marginBottom = '10px';
+
+            img.style.display = 'block';
+            img.style.marginLeft = '40%' ;
+            img.style.marginbottom = '10px' ;
 			img.style.width = '476px';
 			img.style.height = '472px';
-			$('#View_area').empty();
+            $("#View_area").empty();
+
 			preview.appendChild(img);
 			if (window.FileReader) { // FireFox, Chrome, Opera 확인.
 				var reader = new FileReader();
