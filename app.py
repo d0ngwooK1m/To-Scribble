@@ -4,6 +4,7 @@ import random
 import jwt
 import hashlib
 import datetime
+import urllib.request
 
 app = Flask(__name__)
 SECRET_KEY = 'secret'
@@ -11,15 +12,20 @@ SECRET_KEY = 'secret'
 client = MongoClient('localhost', 27017)
 db = client.To_Scribble
 
+UPLOAD_FOLDER = 'static/uploads/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
 def mainpage():
     token_receive = request.cookies.get('mytoken')
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY , algorithms=['HS256'])
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"email": payload['email']})
-        return render_template('mainpage.html')
+        all_post = list(db.posts.find({}, {'_id': False}))
+        all_post.reverse()
+        return render_template('mainpage.html',all_post=all_post)
     except jwt.exceptions.DecodeError:
         return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
 
@@ -35,42 +41,58 @@ def signuppage():
 
 @app.route('/mypage/')
 def mypage():
-    return render_template('mypage.html')
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
+    my_posts.reverse()
+    # return jsonify({'my_posts': my_posts})
+    return render_template('mypage.html',my_posts=my_posts)
 
 ## 로그인 HTML을 주는 기능
 # API 기능 여기서 작성해주세요!
 
-
 # 일기 포스팅(등록) API
 @app.route('/mainpage/post', methods=['POST'])
 def posting():
+    token_receive = request.cookies.get('mytoken')
     result = request.get_json()
-    # print(result["comment"], result["weather"], result["date"])
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+    imageurl = result["img"]
+    postID = str(random.random())[3:]
+    imagepath = f'../static/postimg/{postID}.jpg'
+    urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
+    ###img 저장 부분###
     post = {
-        "postId": random.random(),
-        "email": result["email"],
-        "img": result["img"],
+        "postId": postID, # split 해서 2번째 자리부터 가져오기 나중에처리.
+        "email": payload["email"],
+        "img": imagepath,
         "date": result["date"],
         "weather": result["weather"],
         "comment": result["comment"],
     }
-
     db.posts.insert_one(post)
-
     return jsonify({"result": "일기를 저장했습니다!"})
 
 # 회원가입 API
 @app.route('/api/usersignup/',methods = ['POST'])
 def api_signuppage():
-    nickname_receive = request.form['nickname_give']
+    nickname_receive = request.form['nickname_give'] # request.form.get()을 사용하면 값이 None일 때도 출력할 수 있다.
     email_receive = request.form['email_give']
     pw_receive = request.form['pw_give']
     pw_check_receive = request.form['pw_check_give']
     # 비밀번호는 hashlib을 이용하여 해시함수로 변환하기
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+    # 사진파일
+    file = request.files["file_give"]
+    extension = file.filename.split('.')[-1] # ex) jpg
+    save_to = f'static/img/{email_receive}.{extension}'  #email이라는 이름은 img에 저장되는 이름일뿐
+    file.save(save_to)
+
     #db 저장하기
     doc = {
-        'nick': nickname_receive,
+        'image': save_to,
+        'nickname': nickname_receive,
         'pw': pw_hash,
         'email': email_receive,
         'pw_check': pw_check_receive
@@ -95,7 +117,7 @@ def api_loginpage():
     if result is not None:
         payload = {
             'email': email_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1) #만료시간
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=100) #만료시간
         }
         token = jwt.encode(payload, SECRET_KEY , algorithm='HS256')#decode('utf-8')
         return jsonify({'result': 'success', 'token': token})
@@ -107,7 +129,6 @@ def api_loginpage():
 def userinfo_mypage():
     # email_receive = request.args.get('sample_give')
     user_info = db.users.find_one({'email': 'sample_give'}, {'_id': False})
-
     return jsonify({'msg': user_info})
 
 
@@ -117,18 +138,18 @@ def delete_mypage():
     db.posts.delete_one({'postId': postId_receive})
     return jsonify({'msg': '삭제 완료!'})
 
-@app.route('/mypage/showmypost', methods=['GET'])
-def show_mypost():
-    sample_receive = request.args.get('sample_give')
-    my_posts = list(db.posts.find({'num': sample_receive}, {'_id': False}))
-    print(my_posts)
-    return jsonify({'my_posts': my_posts})
+#@app.route('/mypage/showmypost', methods=['GET'])
+# def show_mypost():
+#     sample_receive = request.args.get('sample_give')
+#     my_posts = list(db.posts.find({'num': sample_receive}, {'_id': False}))
+#     print(my_posts)
+#     return jsonify({'my_posts': my_posts})
 
 
-@app.route('/allpost', methods=['GET'])
-def show_allpost():
-    all_post = list(db.posts.find({}, {'_id': False}))
-    return jsonify({'all_post': all_post})
+# @app.route('/allpost', methods=['GET'])
+# def show_allpost():
+#     all_post = list(db.posts.find({}, {'_id': False}))
+#     return jsonify({'all_post': all_post})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

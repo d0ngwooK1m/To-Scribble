@@ -73,5 +73,30 @@
         </p>
     </div>
     <div class="card-wrapper">
+        {% for post in my_posts %}
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src={{ post.img }}>
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="content">
+                        <div class="content_text">
+                            {{post.comment}}
+                        </div>
+                        <div>
+                            <br>
+                            <time datetime="2016-1-1">{{post.date}}</time>
+                            <weather>{{post.weather}}</weather>
+                        </div>
+                        <button onclick="deleteMypage()" class="delete"></button>
+                    </div>
+                </div>
+                <button class="button is-danger" onclick="deleteMypage({{post.postId}})">
+                    Delete post
+                </button>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

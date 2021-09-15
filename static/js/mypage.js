@@ -1,7 +1,8 @@
 $(document).ready(function () {
     showUser();
-    showmypost();
+    // showmypost();
 });
+
 function showUser() {
     $.ajax({
         type: 'GET',
@@ -13,6 +14,7 @@ function showUser() {
         }
     });
 }
+
 function showmypost() {
     $.ajax({
         type: 'GET',
@@ -21,12 +23,12 @@ function showmypost() {
         success: function (response) {
             let my_post = response['my_posts']
 
-                for (let i = 0; i < my_post.length; i++) {
-                    let imageurl = my_post[i]['image']
-                    let text = my_post[i]['text']
-                    let date = my_post[i]['date']
-                    let weather = my_post[i]['weather']
-                    let temp_html = `
+            for (let i = 0; i < my_post.length; i++) {
+                let imageurl = my_post[i]['image']
+                let text = my_post[i]['text']
+                let date = my_post[i]['date']
+                let weather = my_post[i]['weather']
+                let temp_html = `
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-4by3">
@@ -53,8 +55,8 @@ function showmypost() {
                         </div>
                     </div>
                 </div>`
-                    $('#card-box').append(temp_html)
-                }
+                $('#card-box').append(temp_html)
+            }
 
         }
     });
