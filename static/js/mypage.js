@@ -73,3 +73,7 @@ function deleteMypage(postId) {
         }
     });
 }
+function log_out() {
+    $.removeCookie('mytoken', {path: '/'});
+    window.location.href = "/"
+}

@@ -154,9 +154,10 @@ submitBtn.addEventListener('click', () => {
             alert(response["result"]);
             window.location.href = '/';
         })
-
-
-
-
 });
+function log_out() {
+    $.removeCookie('mytoken', {path: '/'});
+    alert("로그아웃 완료!")
+    window.location.href = "/"
+}
 
