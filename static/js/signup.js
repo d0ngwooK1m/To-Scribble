@@ -4,10 +4,22 @@ function makeInfo() {
     let pw = $('#pw-id').val()
     let pw_check = $('#pw-check-id').val()
 
+    let file = $('#file-id')[0].files[0]
+    let form_data = new FormData()
+    form_data.append("file_give", file)
+    form_data.append("nickname_give", nick)
+    form_data.append("email_give", email)
+    form_data.append("pw_give", pw)
+    form_data.append("pw_check_give", pw_check)
+
+
     $.ajax({
         type: "POST",
         url: "/api/usersignup/",
-        data: {nickname_give: nick, email_give: email, pw_give: pw, pw_check_give: pw_check },
+        data: form_data, // text일 때는 상관없지만, file이 있을때는 form_data를 사용
+        cache: false, // 사진이 어떤 형태인줄 모르니, 밑에 3개를 False 시켜 기준 맞추기
+        contentType: false,
+        processData: false,
         success: function (response) {
             alert(response["msg"]);
             window.location.href = '/userlogin'
@@ -59,12 +71,14 @@ function previewImage(targetObj, View_area) {
 			img.id = "prev_" + View_area;
 			img.classList.add("obj");
 			img.file = file;
+
             img.style.display = 'block';
-            img.style.marginLeft = '40%'
-            img.style.marginbottom = '10px'
+            img.style.marginLeft = '40%' ;
+            img.style.marginbottom = '10px' ;
 			img.style.width = '476px';
 			img.style.height = '472px';
             $("#View_area").empty();
+
 			preview.appendChild(img);
 			if (window.FileReader) { // FireFox, Chrome, Opera 확인.
 				var reader = new FileReader();
