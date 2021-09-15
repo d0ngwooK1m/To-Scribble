@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient
 import random
@@ -19,7 +18,7 @@ def mainpage():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY , algorithms=['HS256'])
-        user_info = db.user.find_one({"email": payload['email']})
+        user_info = db.users.find_one({"email": payload['email']})
         return render_template('mainpage.html')
     except jwt.exceptions.DecodeError:
         return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
@@ -56,7 +55,7 @@ def posting():
         "comment": result["comment"],
     }
 
-    db.users.insert_one(post)
+    db.posts.insert_one(post)
 
     return jsonify({"result": "일기를 저장했습니다!"})
 
@@ -76,7 +75,7 @@ def api_signuppage():
         'email': email_receive,
         'pw_check': pw_check_receive
     }
-    db.user.insert_one(doc)
+    db.users.insert_one(doc)
     return jsonify({'msg': '회원가입을 축하드립니다!'})
 #
 # # 로그인 API
@@ -91,7 +90,7 @@ def api_loginpage():
         'email': email_receive,
         'pw' : pw_hash
     }
-    result = db.user.find_one(doc)
+    result = db.users.find_one(doc)
 
     if result is not None:
         payload = {
