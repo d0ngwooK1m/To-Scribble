@@ -1,3 +1,8 @@
+function isEmail(asValue) {
+	var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+	return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
+}
+
 function makeInfo() {
     let nick = $('#nick-id').val()
 	let regExpNickname = /^[a-zA-Z0-9-_ㄱ-ㅎ|ㅏ-ㅣ|가-힣]{3,16}$/
@@ -15,6 +20,10 @@ function makeInfo() {
 		return alert("이메일이나 비밀번호가 잘못되었습니다. 다시 확인해주세요!");
 	}
 
+	if (!isEmail(email)){
+		alert("이메일 형식을 확인해주세요");
+		return;
+	}
     let file = $('#profile_pt')[0].files[0]
     let form_data = new FormData()
     form_data.append("file_give", file)
@@ -41,6 +50,9 @@ function makeInfo() {
 		},
     })
 }
+
+
+출처: https://suyou.tistory.com/150 [수유산장]
 
 function previewImage(targetObj, View_area) {
 	var preview = document.getElementById(View_area); //div id
