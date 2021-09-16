@@ -93,6 +93,7 @@ def posting():
 
     imageurl = result["img"]
     postID = str(random.random())[3:10]
+    # postID = '01234'
     if postID[0] == '0':
         postID = postID[1:]
     imagepath = f'../static/postimg/{postID}.jpg'

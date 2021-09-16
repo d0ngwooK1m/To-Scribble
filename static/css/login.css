@@ -55,4 +55,12 @@ body {
 .login_btn {
     width: 50%;
     margin: auto;
+    font-family: 'Staatliches', cursive;
+}
+
+#btn {
+    background-color: #ffdd57;
+    font-family: 'Staatliches', cursive;
+    font-size: 1.3rem;
+    border: 1px solid black;
 }

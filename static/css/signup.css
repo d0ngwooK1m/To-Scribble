@@ -19,25 +19,31 @@
 
 .input {
     margin-bottom: 10px;
+    border: 1px solid black;
 }
 /* 여기서부터 작업*/
 
 .filebox label {
-    display: inline-block;
-    margin-left: 300px;
+    display: flex;
+    width: 30%;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
     margin-bottom: 10px;
     padding: .5em .75em;
     color: #000000;
-    font-size: inherit;
+    /*font-size: inherit;*/
     line-height: normal;
     vertical-align: middle;
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
     cursor: pointer;
-    border: 1px solid #ebebeb;
-    border-bottom-color: #e2e2e2;
     border-radius: .25em;
     /*text-align:center;*/
     /*vertical-align:middle;*/
+    background-color: #ffdd57;
+    font-family: 'Staatliches', cursive;
+    font-size: 1.3rem;
+    border: 1px solid black;
 }
 .filebox input[type="file"] {
     /* 파일 필드 숨기기 */
@@ -59,4 +65,11 @@ body
 {
   background-color:whitesmoke;
     height : 100vh;
+}
+
+#btn {
+    background-color: #ffdd57;
+    font-family: 'Staatliches', cursive;
+    font-size: 1.3rem;
+    border: 1px solid black;
 }
