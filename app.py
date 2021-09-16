@@ -106,7 +106,7 @@ def api_signuppage():
     nickname_receive = request.form['nickname_give'] # request.form.get()을 사용하면 값이 None일 때도 출력할 수 있다.
     email_receive = request.form['email_give']
     pw_receive = request.form['pw_give']
-    pw_check_receive = request.form['pw_check_give']
+  #  pw_check_receive = request.form['pw_check_give']
     # 비밀번호는 hashlib을 이용하여 해시함수로 변환하기
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     # 사진파일
@@ -122,7 +122,7 @@ def api_signuppage():
         'nickname': nickname_receive,
         'pw': pw_hash,
         'email': email_receive,
-        'pw_check': pw_check_receive
+       # 'pw_check': pw_check_receive
     }
     db.users.insert_one(doc)
     return jsonify({'msg': '회원가입을 축하드립니다!'})
