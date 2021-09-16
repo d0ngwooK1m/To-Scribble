@@ -2,6 +2,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mainpage.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script defer src="{{ url_for('static', filename='js/mainpage.js') }}"></script>
 
 {% endblock %}
@@ -64,7 +65,7 @@
 
                         <div class="select">
                             <select id="weather-select">
-                                <option>Select dropdown</option>
+                                <option>날씨</option>
                                 <option>🌞</option>
                                 <option>☂</option>
                                 <option>🌀</option>
@@ -94,38 +95,44 @@
                 </div>
             </div>
         </div>
-
         <div class="card-wrapper background_color" id="card-box">
             {% for post in all_post %}
-                <div class="card">
+                <div class="card" id="{{ post.postId }}">
                     <div class="card-image">
                         <figure class="image is-4by3">
                             <img src={{ post.img }}>
                         </figure>
                     </div>
-                    <div class="card-content">
-                        <div class="content">
-                            {{ post.comment }}
-                            <br>
-                            <time datetime="2016-1-1">{{ post.date }}</time>
-                            <br>
-                            <weather>{{ post.weather }}</weather>
-                        </div>
+                <div class="card-content">
+                    <div class="content">
+                        {{ post.comment }}
+                        <br>
+                        <time datetime="2016-1-1">{{ post.date }}</time>
+                        <br>
+                        <weather>{{ post.weather }}</weather>
                     </div>
                 </div>
+                <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
+                    <span class="icon is-small">
+                        {% if post.checklike %}
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                        {% endif %}
+                    </span>&nbsp;<span
+                        class="like-num">{{ post.count }}</span>
+                </a>
+            </div>
             {% endfor %}
-            {#TOP으로 올라가는 버튼#}
-            <div style="cursor:pointer;position: fixed;bottom: 10px;right: 10px;" onclick="window.scrollTo(0,0);"> {#cursor 이거는 마우스를 손가락으로 바꿔줌#}
-{#                <a class="button is-warning button" style="color: black" >#}
-{#                    <strong>TOP</strong>#}
-{#                </a>#}
+            <div style="cursor:pointer;position: fixed;bottom: 10px;right: 10px;" onclick="window.scrollTo(0,0);">
+                {#cursor 이거는 마우스를 손가락으로 바꿔줌#}
+
                 <img class="up-img" src="../static/img/up.png">
             </div>
+
         </div>
     </div>
+{#    </div>#}
 
 
-    {#    <div style="position: fixed; bottom: 5px; right: 5px;">#}
-    {#        <a href="/mainpage/"><img scr="top.png" titl="위로가기"></a>#}
-    {#    </div>#}
 {% endblock %}

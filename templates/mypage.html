@@ -2,6 +2,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
 {% endblock %}
 
@@ -83,6 +84,14 @@
                         <button onclick="deleteMypage()" class="delete"></button>
                     </div>
                 </div>
+
+                <a class="level-item is-sparta" aria-label="heart">
+                    <span class="icon is-small">
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                    </span>&nbsp;<span
+                        class="like-num">{{ post.count }}</span>
+                </a>
+
                 <button class="button is-danger" onclick="deleteMypage({{post.postId}})">
                     Delete post
                 </button>

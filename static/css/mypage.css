@@ -74,3 +74,6 @@ body{
 .content_text {
     height: 30px;
 }
+.is-sparta {
+    color: #e8344e !important;
+}
