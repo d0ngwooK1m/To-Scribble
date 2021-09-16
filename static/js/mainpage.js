@@ -134,10 +134,14 @@ const comment_give = document.querySelector('.diary-comment');
 
 submitBtn.addEventListener('click', () => {
     const url = canvas.toDataURL('image/png');
+    //🔥
+    let weather;
+    if(weather_give.options[weather_give.selectedIndex].value == '날씨')
+        weather = '☹'
     const postData = {
         img: url,
         date: date_give.value,
-        weather: weather_give.options[weather_give.selectedIndex].value,
+        weather: weather,
         comment: comment_give.value,
     }
 
@@ -177,7 +181,6 @@ function toggle_like(post_id) {
                 $i_like.addClass("fa-heart").removeClass("fa-heart-o")
                 console.log(response["count"])
                 $a_like.find("span.like-num").text(response["count"])
-
             }
         })
     }

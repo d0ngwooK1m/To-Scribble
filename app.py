@@ -34,15 +34,19 @@ def mainpage():
     #     return render_template('mainpage.html',all_post=all_post, logincheck=loginCheck())
     # except jwt.exceptions.DecodeError:
     #     return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
+    all_post = list(db.posts.find({}, {'_id': False}))
+    for post in all_post:
+        post['count'] = db.likes.count_documents({"post_id": post["postId"]})
     if request.cookies.get('mytoken') is not None:
         token_receive = request.cookies.get('mytoken')
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"email": payload['email']})
+        for post in all_post:
+            post['checklike'] =  bool(db.likes.find_one({"post_id": post["postId"], "useremail": payload['email']}))
     else:
         user_info = {'nickname' : 'guest'}
-    all_post = list(db.posts.find({}, {'_id': False}))
-    print(all_post)
     all_post.reverse()
+    print(all_post)
     return render_template('mainpage.html', userinfo=user_info, all_post=all_post, logincheck=loginCheck())
 
 
@@ -69,6 +73,8 @@ def mypage():
         user_info = db.users.find_one({"email": payload['email']})
         my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
         my_posts.reverse()
+        for post in my_posts:
+            post['count'] = db.likes.count_documents({"post_id": post["postId"]})
         return render_template('mypage.html',my_posts=my_posts, userinfo=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('fail', msg="로그인 시간 만료"))
@@ -86,7 +92,9 @@ def posting():
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
     imageurl = result["img"]
-    postID = str(random.random())[3:]
+    postID = str(random.random())[3:10]
+    if postID[0] == '0':
+        postID = postID[1:]
     imagepath = f'../static/postimg/{postID}.jpg'
     urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
     ###img 저장 부분###
@@ -97,7 +105,6 @@ def posting():
         "date": result["date"],
         "weather": result["weather"],
         "comment": result["comment"],
-        "likecount" : '0',
     }
     db.posts.insert_one(post)
     return jsonify({"result": "일기를 저장했습니다!"})
@@ -181,6 +188,7 @@ def userinfo_mypage():
 def delete_mypage():
     postId_receive = request.form['postId_give']
     db.posts.delete_one({'postId': postId_receive})
+    print(db.likes.remove({'post_id':postId_receive}))
     return jsonify({'msg': '삭제 완료!'})
 
 
@@ -213,17 +221,11 @@ def update_like():
             "post_id": post_id_receive,
             "useremail": payload['email'],
         }
-        curcnt = int(db.posts.find_one({'postId': post_id_receive})['likecount'])
-        count = 0
-        if action =="like":
+        if action == "like":
             db.likes.insert_one(doc)
-            count = curcnt + 1
-            db.posts.update_one({'postId': post_id_receive}, {'$set': {'likecount': str(count)}})
         else:
             db.likes.delete_one(doc)
-            count = curcnt -1
-            db.posts.update_one({'postId': post_id_receive}, {'$set': {'likecount': str(count)}})
-        #count = db.likes.count_documents({"post_id": post_id_receive})#이런 방식도 있지만 postdb에 저장하는게 나을것같다는 생각이..
+        count = db.likes.count_documents({"post_id": post_id_receive})
         return jsonify({"result": "success", 'msg': 'updated', "count": str(count)})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("mainpage"))

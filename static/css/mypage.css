@@ -1,3 +1,28 @@
+body{
+    background-color: whitesmoke;
+    height: 100vh;
+}
+.main-title{
+    font-family: 'Single Day', cursive;
+    font-size: 120px;
+    text-align: right;
+    text-decoration: underline;
+    text-underline-position: under;
+    text-decoration-thickness: 3px;
+}
+.button {
+    float : left;
+    width: 100px; height: 50px;
+    background-color: #ccc;
+    border-radius : 20px;
+    box-shadow : 3px 3px 3px black;
+    ransition-duration: 0.3s;
+}
+.button:active{
+    margin-left: 5px;
+    margin-top : 5px;
+    box-shadow : none;
+}
 .navbar-theme {
     font-size: 2rem;
     font-weight: bold;
@@ -48,4 +73,7 @@
 }
 .content_text {
     height: 30px;
+}
+.is-sparta {
+    color: #e8344e !important;
 }

@@ -64,6 +64,8 @@ function showmypost() {
 
 
 function deleteMypage(postId) {
+    console.log("di!!!!!!!!")
+    console.log(postId)
     $.ajax({
         type: 'POST',
         url: '/mypage/delete',

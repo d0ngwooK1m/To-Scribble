@@ -1,118 +1,131 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/mainpage.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script defer src="{{ url_for('static', filename='js/mainpage.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mainpage.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer src="{{ url_for('static', filename='js/mainpage.js') }}"></script>
+
 {% endblock %}
 
 {% block content %}
 
-    <div>Mainpage test</div>
-
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <div class="navbar-item navbar-theme">To-Scribble</div>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    {% if logincheck == True %}
-                    <a class="button is-warning" href="/mypage/">
-                        <strong>My page</strong>
-                    </a>
-                    {% else %}
-                    <a class="button is-warning" href="/usersignup/">
-                        <strong>Sign up</strong>
-                    </a>
-                    {% endif %}
-
-                    {% if logincheck == True %}
-                    <a class="button is-warning" onclick="log_out()"/>
-                        Log out
-                    </a>
-                    {% else %}
-                    <a class="button is-warning" href="/userlogin/">
-                        Log in
-                    </a>
-                    {% endif %}
-
-                </div>
-            </div>
+    <nav class="navbar background_color" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <div class="main-title"><strong>TO-SCRIBBLE</strong></div>
+            {# <div class="navbar-item navbar-theme title">To-Scribble</div>#}
         </div>
-    </div>
-</nav>
 
-<div class="drawing-wrap">
-    <div class="drawing-hide-button-wrap">
-        <div class="drawing-hide-theme">
-            {{ userinfo['nickname'] }}님 환영합니다! 오늘의 기분을 표현해보세요!
-        </div>
-        <button class="drawing-hide-button">
-            눌러😎
-        </button>
-    </div>
-    <div class="diary-wrap">
-        <div class="diary">
-            <canvas class="canvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
+        <div id="navbarBasicExample" class="navbar-menu">
 
-            <div class="diary-content">
-                <div class="top-wrapper">
-                    <input class="input is-small diary-date" type="date" placeholder="날짜 선택">
-                    <div class="select">
-                        <select id="weather-select">
-                            <option>Select dropdown</option>
-                            <option>🌞</option>
-                            <option>☂</option>
-                            <option>🌀</option>
-                            <option>❄</option>
-                        </select>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        {% if logincheck == True %}
+                            <a class="button is-warning button" style="color: black" href="/mypage/">
+                                <strong>My page</strong>
+                            </a>
+                        {% else %}
+                            <a class="button is-warning button" style="color: black" href="/usersignup/">
+                                <strong>Sign up</strong>
+                            </a>
+                        {% endif %}
+
+                        {% if logincheck == True %}
+                            <a class="button is-warning button" style="color: black" onclick="log_out()"/">
+                            <strong>Log out</strong>
+                            </a>
+                        {% else %}
+                            <a class="button is-warning button" style="color: black" href="/userlogin/">
+                                <strong>Log in</strong>
+                            </a>
+                        {% endif %}
+
                     </div>
                 </div>
-                <input class="input is-small diary-comment" type="text" placeholder="30자로 내 기분을 표현해보세요" maxlength="30">
-                <div class="radio-color-wrap">
-                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                    <button style="background-color: red" class="red-button color-button" data-color="red"></button>
-                    <button style="background-color: green" class="green-button color-button" data-color="green"></button>
-                    <button style="background-color: blue" class="blue-button color-button" data-color="blue"></button>
-                    <button style="background-color: black" class="black-button color-button" data-color="black"></button>
-                </div>
-                <div class="tool-wrap">
-                    <button class="tool-button button is-warning pen">연필</button>
-                    <button class="tool-button button is-warning eraser">지우개</button>
-                    <button class="tool-button button is-warning clear">새로 쓰기</button>
-{#                    <button class="tool-button send-image">Image</button>#}
-                </div>
-                <button class="diary-submit-button button is-warning">내 기분 알리기</button>
             </div>
         </div>
-    </div>
-</div>
+    </nav>
 
-<div class="card-wrapper" id="card-box">
-{% for post in all_post %}
-    <div class="card" id = "{{ post.postId }}">
-        <div class="card-image">
-            <figure class="image is-4by3">
-                <img src={{ post.img }} >
-            </figure>
+    <div class="drawing-wrap background_color">
+        <div class="drawing-hide-button-wrap">
+            <div class="drawing-hide-theme">
+                {{ userinfo['nickname'] }}님 환영합니다! 오늘의 기분을 표현해보세요!
+            </div>
+            <button class="drawing-hide-button">
+                눌러😎
+            </button>
         </div>
-        <div class="card-content">
-            <div class="content">
-                {{post.comment}}
-                <br>
-                <time datetime="2016-1-1">{{post.date}}</time>
-                <br>
-                <weather>{{post.weather}}</weather>
+        <div class="diary-wrap">
+            <div class="diary">
+                <canvas class="canvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
+
+                <div class="diary-content">
+                    <div class="top-wrapper">
+                        <input class="input is-small diary-date" type="date" placeholder="날짜 선택">
+
+                        <div class="select">
+                            <select id="weather-select">
+                                <option>날씨</option>
+                                <option>🌞</option>
+                                <option>☂</option>
+                                <option>🌀</option>
+                                <option>❄</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input class="input is-small diary-comment" type="text" placeholder="30자로 내 기분을 표현해보세요"
+                           maxlength="30">
+                    <div class="radio-color-wrap">
+                        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                        <button style="background-color: red" class="red-button color-button" data-color="red"></button>
+                        <button style="background-color: green" class="green-button color-button"
+                                data-color="green"></button>
+                        <button style="background-color: blue" class="blue-button color-button"
+                                data-color="blue"></button>
+                        <button style="background-color: black" class="black-button color-button"
+                                data-color="black"></button>
+                    </div>
+                    <div class="tool-wrap">
+                        <button class="tool-button button is-warning pen" style="font-weight: bold">연필</button>
+                        <button class="tool-button button is-warning eraser" style="font-weight: bold">지우개</button>
+                        <button class="tool-button button is-warning clear" style="font-weight: bold">새로 쓰기</button>
+                        {#                    <button class="tool-button send-image">Image</button>#}
+                    </div>
+                    <button class="diary-submit-button button is-warning" style="font-weight: bold">내 기분 알리기</button>
+                </div>
             </div>
         </div>
-        <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
-            <span class="icon is-small"><i class="fa fa-heart-o" aria-hidden="true"></i></span>&nbsp;<span class="like-num">{{post.likecount}}</span>
-        </a>
+
+        <div class="card-wrapper" id="card-box">
+            {% for post in all_post %}
+                <div class="card" id="{{ post.postId }}">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src={{ post.img }}>
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="content">
+                        {{ post.comment }}
+                        <br>
+                        <time datetime="2016-1-1">{{ post.date }}</time>
+                        <br>
+                        <weather>{{ post.weather }}</weather>
+                    </div>
+                </div>
+                <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
+                    <span class="icon is-small">
+                        {% if post.checklike %}
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                        {% endif %}
+                    </span>&nbsp;<span
+                        class="like-num">{{ post.count }}</span>
+                </a>
+            </div>
+        {% endfor %}
     </div>
-{% endfor %}
-</div>
+
+
 {% endblock %}
