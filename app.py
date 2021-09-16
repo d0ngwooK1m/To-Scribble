@@ -110,11 +110,14 @@ def api_signuppage():
     # 비밀번호는 hashlib을 이용하여 해시함수로 변환하기
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     # 사진파일
-    file = request.files["file_give"]
-    extension = file.filename.split('.')[-1] # ex) jpg
-    save_to = f'static/img/{email_receive}.{extension}'  #email이라는 이름은 img에 저장되는 이름일뿐
-    file.save(save_to)
-    img_url = f'../static/img/{email_receive}.{extension}'
+    if len(request.files): # 보내준 파일이 있다면 여기를
+        file = request.files["file_give"]
+        extension = file.filename.split('.')[-1] # ex) jpg
+        save_to = f'static/img/{email_receive}.{extension}'  #email이라는 이름은 img에 저장되는 이름일뿐
+        file.save(save_to)
+        img_url = f'../static/img/{email_receive}.{extension}'
+    else: # 보내준 파일이 없다면 여기를.
+        img_url = f'../static/img/pepewine.png'
 
     #db 저장하기
     doc = {
