@@ -1,31 +1,56 @@
+
+body {
+    background-color: whitesmoke;
+    height: 100vh;
+}
+.main-title{
+    font-family: 'Single Day', cursive;
+    font-size: 120px;
+    text-align: right;
+    text-decoration: underline;
+    text-underline-position: under;
+    text-decoration-thickness: 3px;
+}
+
+.button {
+    float : left;
+    width: 100px; height: 50px;
+    background-color: #ccc;
+    border-radius : 20px;
+    box-shadow : 3px 3px 3px black;
+    ransition-duration: 0.3s;
+}
+.button:active{
+    margin-left: 5px;
+    margin-top : 5px;
+    box-shadow : none;
+}
+.background_color{
+    background-color: whitesmoke;
+}
 .drawing-hide-button-wrap {
     display: flex;
     justify-content: space-between;
     margin: 10px 70px;
 }
-
 .navbar-theme {
     font-size: 2rem;
     font-weight: bold;
 }
-
 .card-wrapper {
     display: flex;
     flex-wrap : wrap;
     justify-content: space-evenly;
 }
-
 .card {
     flex-shrink: 0;
     width: 20%;
     height: 10%;
     margin: 10px
 }
-
 .diary-wrap {
     display: flex;
 }
-
 .diary {
     display: none;
     justify-content: space-between;
