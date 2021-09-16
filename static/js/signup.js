@@ -51,9 +51,6 @@ function makeInfo() {
     })
 }
 
-
-출처: https://suyou.tistory.com/150 [수유산장]
-
 function previewImage(targetObj, View_area) {
 	var preview = document.getElementById(View_area); //div id
 	var ua = window.navigator.userAgent;
