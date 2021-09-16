@@ -68,6 +68,7 @@ const submitBtn = document.querySelector('.diary-submit-button');
 const penBtn = document.querySelector('.pen');
 const eraserBtn = document.querySelector('.eraser');
 const clearBtn = document.querySelector('.clear');
+
 // const imageBtn = document.querySelector('.send-image');
 let drawingMode = false;
 let drawingTool = "pen";
@@ -76,16 +77,20 @@ let colorVal = 'black';
 // context.arc(100, 100, 50, 0, Math.PI * 2, false);
 
 const chooseDrawingTool = (e) => {
+    const toolSize = document.querySelector('#myRange').value;
+    const bound = canvas.getBoundingClientRect();
+    const resizedX = e.layerX * (canvas.width / bound.width);
+    const resizedY = e.layerY  * (canvas.width / bound.width);
     if (drawingTool === "pen") {
         // console.log(e)
         context.globalCompositeOperation = "source-over";
         context.beginPath();
-        context.arc(e.layerX, e.layerY, 10, 0, Math.PI * 2, false);
+        context.arc(resizedX, resizedY, toolSize*2, 0, Math.PI * 2, false);
         context.fill();
     } else if (drawingTool === 'eraser') {
         context.globalCompositeOperation = "destination-out";
         context.beginPath();
-        context.arc(e.layerX, e.layerY, 10, 0, Math.PI * 2, false);
+        context.arc(resizedX, resizedY, toolSize*2, 0, Math.PI * 2, false);
         context.fill();
     }
 };
@@ -127,16 +132,31 @@ clearBtn.addEventListener('click', () => {
 
 //일기 포스팅(등록) API
 const url = canvas.toDataURL('image/png');
-const date_give = document.querySelector('.diary-date');
+const today = new Date();
+const year = today.getFullYear();
+let month = today.getMonth();
+if (month < 10) {
+    month = `0${today.getMonth()+1}`;
+}
+let date = today.getDate();
+if (date < 10) {
+    date = `0${today.getDate()}`
+}
+
+let date_give = document.querySelector('.diary-date').value;
+if (date_give === "") {
+    date_give = `${year}-${month}-${date}`;
+}
 let weather_give = document.getElementById('weather-select');
 // weather_give = weather_give.options[weather_give.selectedIndex].value;
 const comment_give = document.querySelector('.diary-comment');
+
 
 submitBtn.addEventListener('click', () => {
     const url = canvas.toDataURL('image/png');
     const postData = {
         img: url,
-        date: date_give.value,
+        date: date_give,
         weather: weather_give.options[weather_give.selectedIndex].value,
         comment: comment_give.value,
     }
