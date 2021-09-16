@@ -41,6 +41,7 @@ def mainpage():
     else:
         user_info = {'nickname' : 'guest'}
     all_post = list(db.posts.find({}, {'_id': False}))
+    print(all_post)
     all_post.reverse()
     return render_template('mainpage.html', userinfo=user_info, all_post=all_post, logincheck=loginCheck())
 
@@ -96,6 +97,7 @@ def posting():
         "date": result["date"],
         "weather": result["weather"],
         "comment": result["comment"],
+        "likecount" : '0',
     }
     db.posts.insert_one(post)
     return jsonify({"result": "일기를 저장했습니다!"})
@@ -195,6 +197,36 @@ def delete_mypage():
 # def show_allpost():
 #     all_post = list(db.posts.find({}, {'_id': False}))
 #     return jsonify({'all_post': all_post})
+
+
+### 승준 좋아요 기능###
+@app.route('/update_like', methods=['POST'])
+def update_like():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # 좋아요 수 변경
+        #payload['email']}
+        post_id_receive = request.form["post_id_give"]
+        action = request.form["action_give"]# "like" or "inlike"
+        doc = {
+            "post_id": post_id_receive,
+            "useremail": payload['email'],
+        }
+        curcnt = int(db.posts.find_one({'postId': post_id_receive})['likecount'])
+        count = 0
+        if action =="like":
+            db.likes.insert_one(doc)
+            count = curcnt + 1
+            db.posts.update_one({'postId': post_id_receive}, {'$set': {'likecount': str(count)}})
+        else:
+            db.likes.delete_one(doc)
+            count = curcnt -1
+            db.posts.update_one({'postId': post_id_receive}, {'$set': {'likecount': str(count)}})
+        #count = db.likes.count_documents({"post_id": post_id_receive})#이런 방식도 있지만 postdb에 저장하는게 나을것같다는 생각이..
+        return jsonify({"result": "success", 'msg': 'updated', "count": str(count)})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("mainpage"))
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

@@ -161,3 +161,43 @@ function log_out() {
     window.location.href = "/"
 }
 
+function toggle_like(post_id) {
+    console.log(post_id)
+    let $a_like = $(`#${post_id} a[aria-label='${"heart"}']`)
+    let $i_like = $a_like.find("i")
+    if ($i_like.hasClass("fa-heart-o")) {
+        $.ajax({
+            type: "POST",
+            url: "/update_like",
+            data: {
+                post_id_give: post_id,
+                action_give: "like"
+            },
+            success: function (response) {
+                $i_like.addClass("fa-heart").removeClass("fa-heart-o")
+                console.log(response["count"])
+                $a_like.find("span.like-num").text(response["count"])
+
+            }
+        })
+    }
+    else{
+        //여기는 좋아요를 취소한거임
+        $.ajax({
+        type: "POST",
+        url: "/update_like",
+        data: {
+            post_id_give: post_id,
+            action_give: "unlike"
+        },
+        success: function (response) {
+            $i_like.addClass("fa-heart-o").removeClass("fa-heart")
+            console.log(response["count"])
+            $a_like.find("span.like-num").text(response["count"])
+            }
+        })
+    }
+}
+
+
+
