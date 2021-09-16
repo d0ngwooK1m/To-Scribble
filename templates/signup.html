@@ -7,11 +7,16 @@
 
 {% block content %}
 
-<div>Signup test</div>
 <div id='View_area'>
     <img class="logo" src="{{ url_for('static', filename='img/pepewine.png') }}" alt="pepe">
 </div>
-<input type="file" name="profile_pt" id="profile_pt" onchange="previewImage(this,'View_area')">
+<div class = "filebox">
+    <div class = "labelwrap">
+        <label class = "filelabel" for="profile_pt">프로필 사진 업로드</label>
+    </div>
+    <input class = "fileinput" type="file" name="profile_pt" id="profile_pt" onchange="previewImage(this,'View_area')">
+</div>
+
 
 
 <div class="signup-form-wrap">
