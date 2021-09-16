@@ -3,6 +3,11 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
     <script defer src="{{ url_for('static', filename='js/signup.js') }}"></script>
+
+    <!-- 구글폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -12,7 +17,7 @@
 </div>
 <div class = "filebox">
     <div class = "labelwrap">
-        <label class = "filelabel" for="profile_pt">프로필 사진 업로드</label>
+        <label class = "filelabel" for="profile_pt">File Upload</label>
     </div>
     <input class = "fileinput" type="file" name="profile_pt" id="profile_pt" onchange="previewImage(this,'View_area')">
 </div>
@@ -25,7 +30,7 @@
         <input class="input" id="email-id" type="email" placeholder="이메일을 입력해 주세요">
         <input class="input" id="pw-id" type="password" placeholder="패스워드를 입력해 주세요: 패스워드는 영어, 숫자, 특수문자가 한번씩 들어가야하며, 6자 이상 18자 이하여야 합니다.">
         <input class="input" id="pw-check-id" type="password" placeholder="패스워드를 다시 입력해 주세요">
-        <button onclick="makeInfo()" class="button is-medium is-fullwidth">Sign up</button>
+        <button onclick="makeInfo()" id="btn" class="button is-medium is-fullwidth">Sign up</button>
     </div>
 </div>
 {% endblock %}

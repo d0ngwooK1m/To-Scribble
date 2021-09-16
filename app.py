@@ -85,7 +85,10 @@ def posting():
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
     imageurl = result["img"]
-    postID = str(random.random())[3:]
+    postID = str(random.random())[3:10]
+    # postID = '01234'
+    if postID[0] == '0':
+        postID = postID[1:]
     imagepath = f'../static/postimg/{postID}.jpg'
     urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
     ###img 저장 부분###

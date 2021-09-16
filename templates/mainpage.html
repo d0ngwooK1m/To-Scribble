@@ -4,6 +4,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mainpage.css') }}">
     <script defer src="{{ url_for('static', filename='js/mainpage.js') }}"></script>
 
+    <!-- 구글폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -20,21 +25,21 @@
                 <div class="navbar-item">
                     <div class="buttons">
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black" href="/mypage/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/mypage/">
                                 <strong>My page</strong>
                             </a>
                         {% else %}
-                            <a class="button is-warning button" style="color: black" href="/usersignup/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/usersignup/">
                                 <strong>Sign up</strong>
                             </a>
                         {% endif %}
 
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black" onclick="log_out()"/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" onclick="log_out()"/">
                             <strong>Log out</strong>
                             </a>
                         {% else %}
-                            <a class="button is-warning button" style="color: black" href="/userlogin/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/userlogin/">
                                 <strong>Log in</strong>
                             </a>
                         {% endif %}
@@ -47,11 +52,11 @@
 
     <div class="drawing-wrap background_color">
         <div class="drawing-hide-button-wrap">
-            <div class="drawing-hide-theme">
+            <div class="drawing-hide-theme" id="welcome">
                 {{ userinfo['nickname'] }}님 환영합니다! 오늘의 기분을 표현해보세요!
             </div>
-            <button class="drawing-hide-button">
-                눌러😎
+            <button class="drawing-hide-button" id="btn">
+                CLICK😎
             </button>
         </div>
         <div class="diary-wrap">
