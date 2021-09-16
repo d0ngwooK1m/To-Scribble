@@ -1,6 +1,6 @@
 body{
     background-color: whitesmoke;
-    height: 100vh;
+    /*height: 100vh;*/
 }
 .main-title{
     font-family: 'Single Day', cursive;
@@ -74,3 +74,27 @@ body{
 .content_text {
     height: 30px;
 }
+
+
+.navbar-item {
+    font-family: 'Staatliches', cursive;
+}
+
+.bottom {
+    padding: 5% 7%;
+
+}
+.title {
+    font-family: 'Staatliches', cursive;
+    font-size: 3rem;
+}
+
+.subtitle {
+    font-family: 'Jua', sans-serif;
+    font-size: 1.3rem;
+}
+
+.is-sparta {
+    color: #e8344e !important;
+}
+
