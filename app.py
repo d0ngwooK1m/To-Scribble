@@ -105,6 +105,9 @@ def posting():
 def api_signuppage():
     nickname_receive = request.form['nickname_give'] # request.form.get()을 사용하면 값이 None일 때도 출력할 수 있다.
     email_receive = request.form['email_give']
+    duplication_check = db.users.find_one({"email": email_receive}) # 이메일 중복확인
+    if duplication_check is not None:
+        return jsonify({"msg": "이메일이나 비밀번호가 잘못되었습니다. 다시 확인해주세요!"}), 400
     pw_receive = request.form['pw_give']
     pw_check_receive = request.form['pw_check_give']
     # 비밀번호는 hashlib을 이용하여 해시함수로 변환하기

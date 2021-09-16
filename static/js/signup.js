@@ -1,8 +1,19 @@
 function makeInfo() {
     let nick = $('#nick-id').val()
+	let regExpNickname = /^[a-zA-Z0-9-_ㄱ-ㅎ|ㅏ-ㅣ|가-힣]{3,16}$/
+	if (nick.match(regExpNickname) == null) {
+		return alert('닉네임은 영어, 한글, -, _ 를 사용가능하며, 3~16자 사이로 작성해야 합니다!')
+	}
     let email = $('#email-id').val()
     let pw = $('#pw-id').val()
+	let regExpPassword = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{6,18}$/
+	if (pw.match(regExpPassword) == null) {
+		return alert('패스워드는 각각 영어, 숫자, 특수문자를 한글자 이상 포함해야 하며, 6~18자 사이로 작성해야 합니다!')
+	}
     let pw_check = $('#pw-check-id').val()
+	if(pw !== pw_check) {
+		return alert("이메일이나 비밀번호가 잘못되었습니다. 다시 확인해주세요!");
+	}
 
     let file = $('#profile_pt')[0].files[0]
     let form_data = new FormData()
@@ -22,8 +33,12 @@ function makeInfo() {
         processData: false,
         success: function (response) {
             alert(response["msg"]);
-            window.location.href = '/userlogin'
-        }
+			return (window.location.href = '/userlogin');
+        },
+        error: function (response) {
+        	// console.log(response);
+			return(alert(response['responseJSON']['msg']));
+		},
     })
 }
 
