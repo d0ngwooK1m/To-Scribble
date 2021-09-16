@@ -34,14 +34,19 @@ def mainpage():
     #     return render_template('mainpage.html',all_post=all_post, logincheck=loginCheck())
     # except jwt.exceptions.DecodeError:
     #     return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
+    all_post = list(db.posts.find({}, {'_id': False}))
+    for post in all_post:
+        post['count'] = db.likes.count_documents({"post_id": post["postId"]})
     if request.cookies.get('mytoken') is not None:
         token_receive = request.cookies.get('mytoken')
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"email": payload['email']})
+        for post in all_post:
+            post['checklike'] =  bool(db.likes.find_one({"post_id": post["postId"], "useremail": payload['email']}))
     else:
         user_info = {'nickname' : 'guest'}
-    all_post = list(db.posts.find({}, {'_id': False}))
     all_post.reverse()
+    print(all_post)
     return render_template('mainpage.html', userinfo=user_info, all_post=all_post, logincheck=loginCheck())
 
 
@@ -68,6 +73,8 @@ def mypage():
         user_info = db.users.find_one({"email": payload['email']})
         my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
         my_posts.reverse()
+        for post in my_posts:
+            post['count'] = db.likes.count_documents({"post_id": post["postId"]})
         return render_template('mypage.html',my_posts=my_posts, userinfo=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('fail', msg="로그인 시간 만료"))
@@ -182,6 +189,7 @@ def userinfo_mypage():
 def delete_mypage():
     postId_receive = request.form['postId_give']
     db.posts.delete_one({'postId': postId_receive})
+    print(db.likes.remove({'post_id':postId_receive}))
     return jsonify({'msg': '삭제 완료!'})
 
 
@@ -198,6 +206,30 @@ def delete_mypage():
 # def show_allpost():
 #     all_post = list(db.posts.find({}, {'_id': False}))
 #     return jsonify({'all_post': all_post})
+
+
+### 승준 좋아요 기능###
+@app.route('/update_like', methods=['POST'])
+def update_like():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # 좋아요 수 변경
+        #payload['email']}
+        post_id_receive = request.form["post_id_give"]
+        action = request.form["action_give"]# "like" or "inlike"
+        doc = {
+            "post_id": post_id_receive,
+            "useremail": payload['email'],
+        }
+        if action == "like":
+            db.likes.insert_one(doc)
+        else:
+            db.likes.delete_one(doc)
+        count = db.likes.count_documents({"post_id": post_id_receive})
+        return jsonify({"result": "success", 'msg': 'updated', "count": str(count)})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("mainpage"))
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

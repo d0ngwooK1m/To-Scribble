@@ -75,6 +75,7 @@ body{
     height: 30px;
 }
 
+
 .navbar-item {
     font-family: 'Staatliches', cursive;
 }
@@ -92,3 +93,8 @@ body{
     font-family: 'Jua', sans-serif;
     font-size: 1.3rem;
 }
+
+.is-sparta {
+    color: #e8344e !important;
+}
+
