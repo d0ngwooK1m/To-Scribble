@@ -39,7 +39,7 @@ def mainpage():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"email": payload['email']})
     else:
-        user_info = {'nick' : 'guest'}
+        user_info = {'nickname' : 'guest'}
     all_post = list(db.posts.find({}, {'_id': False}))
     all_post.reverse()
     return render_template('mainpage.html', userinfo=user_info, all_post=all_post, logincheck=loginCheck())
