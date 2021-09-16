@@ -7,35 +7,26 @@
 
 {% block content %}
 
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar" style="background-color: whitesmoke" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <div class="navbar-item navbar-theme">To-Scribble</div>
+            <div class="main-title"><strong>TO-SCRIBBLE</strong></div>
         </div>
 
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-end">
-                <a class="navbar-item" href="/">
-                    Mainpage
+                <a class="button is-warning button" style="color: black; margin-right: .5rem" href="/">
+                    <strong>Mainpage</strong>
+                </a>
+                <a class="button is-warning button" style="color: black" onclick = "log_out()">
+                            <strong>Log out</strong>
                 </a>
             </div>
 
-            <div class="navbar-end" id="navbar-button">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <!--                    <a class="button is-primary" href="/usersignup/">-->
-                        <!--                        <strong>Sign up</strong>-->
-                        <!--                    </a>-->
-                        <a class="button is-light" onclick = "log_out()">
-                            Log out
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </nav>
 
-    <div class="box" id="mypage-box">
+    <div class="box" style="background-color: whitesmoke" id="mypage-box">
         <section class="hero">
             <div class="hero-body">
                 <p class="title">

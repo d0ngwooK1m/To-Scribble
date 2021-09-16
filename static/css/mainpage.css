@@ -3,7 +3,7 @@ body {
     background-color: whitesmoke;
     height: 100vh;
 }
-.title{
+.main-title{
     font-family: 'Single Day', cursive;
     font-size: 120px;
     text-align: right;
@@ -56,20 +56,36 @@ body {
     justify-content: space-between;
     width: 100%;
     height: 400px;
-    background-color: aqua;
-    margin: 0 3.5%;
+    background-color: cornsilk;
+    margin: 0 15%;
+    border-radius: .25rem;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10,10,10,0.1), 0 0 0 1px rgba(10,10,10,0.02)
+}
+
+.diary:hover {
+
 }
 
 .canvas {
-    background-color: #eee;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.top-wrapper {
+    width: 580px;
+    margin: 5px 0;
 }
 
 .diary-date {
-    width: 400px;
+    width: 390px;
+    height: 40px;
+    margin-left: 8px;
 }
 
 .diary-comment {
-    width: 500px;
+    width: 570px;
+    height: 35px;
+    margin: 5px 10px;
 }
 
 .slidecontainer {
@@ -83,9 +99,31 @@ body {
 }
 
 .diary-submit-button {
-    width: 100px;
+    width: 200px;
 }
 
+.radio-color-wrap {
+    width: 250px;
+    margin: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tool-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 15px 0;
+}
+
+.tool-button {
+    width: 120px;
+}
+
+.diary-submit-button {
+    width: 90%;
+    margin: 0 5%;
+}
 /*.card {*/
 /*    box-shadow: none;*/
 /*}*/

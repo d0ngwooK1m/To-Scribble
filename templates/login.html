@@ -1,11 +1,17 @@
 <link rel="stylesheet" href="../static/css/login.css">{% extends "base.html" %}
 
+
+
 {#{%if msg %}#}
 {#    alert("{{ msg }}")#}
 {#{% endif %}#}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <!-- 구글폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
     <script defer src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}
 
@@ -13,16 +19,37 @@
 {#        <img class="logo" src="{{ url_for('static', filename='img/pepegood.jpg') }}" alt="pepe">#}
     <div class="login-form-wrap">
         <div class="left">
-            <h1> To-Scribble </h1>
-            <h5> Welcom to To-Scribble</h5>
+            <img src="../static/img/main.gif">
         </div>
         <div class="vl"></div>
         <div class="right ">
+            <div class="logo">
+                <h1>To-Scribble</h1>
+            </div>
             <div class="login-form ">
-                <input class="input" id="useremail-id" type="email" placeholder="이메일을 입력해 주세요">
-                <input class="input" id="userpw-id" type="password" placeholder="패스워드를 입력해 주세요">
-                <button onclick="login()"  class="button is-medium is-fullwidth">Log in</button>
+                <div class="field">
+                    <p class="control has-icons-left has-icons-right">
+                        <input class="input" id="useremail-id" type="email" placeholder="Email">
+                        <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                         </span>
+                        <span class="icon is-small is-right">
+                         <i class="fas fa-check"></i>
+                        </span>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input class="input" id="userpw-id" type="password" placeholder="Password">
+                        <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                        </span>
+                    </p>
+                </div>
+                <div class="login_btn">
+                <button onclick="login()" class="button is-medium is-fullwidth">Log in</button>
                 <h2><a href="/usersignup/">혹시 회원이 아니신가요?</a></h2>
+                </div>
             </div>
         </div>
     </div>
