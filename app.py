@@ -99,6 +99,7 @@ def posting():
     imagepath = f'../static/postimg/{postID}.jpg'
     urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
     ###img 저장 부분###
+
     post = {
         "postId": postID, # split 해서 2번째 자리부터 가져오기 나중에처리.
         "email": payload["email"],

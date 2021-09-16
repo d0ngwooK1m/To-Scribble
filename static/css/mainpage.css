@@ -73,6 +73,8 @@ body {
 .canvas {
     background-color: white;
     border: 1px solid rgba(0, 0, 0, .2);
+    width: 600px;
+    height: 400px;
 }
 
 .top-wrapper {
@@ -94,6 +96,20 @@ body {
 
 .slidecontainer {
     display: flex;
+}
+
+/*.slider::-webkit-slider-thumb {*/
+/*    background: khaki;*/
+/*    cursor: pointer;*/
+/*}*/
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: khaki; /* Green background */
+    cursor: pointer; /* Cursor on hover */
 }
 
 .color-button {
