@@ -30,8 +30,8 @@
                         {% endif %}
 
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black" onclick="log_out()"/">
-                            <strong>Log out</strong>
+                            <a class="button is-warning button" style="color: black" onclick="log_out()">
+                                <strong>Log out</strong>
                             </a>
                         {% else %}
                             <a class="button is-warning button" style="color: black" href="/userlogin/">
@@ -71,46 +71,61 @@
                                 <option>❄</option>
                             </select>
                         </div>
+                    </div>
+                    <input class="input is-small diary-comment" type="text" placeholder="30자로 내 기분을 표현해보세요"
+                           maxlength="30">
+                    <div class="radio-color-wrap">
+                        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                        <button style="background-color: red" class="red-button color-button" data-color="red"></button>
+                        <button style="background-color: green" class="green-button color-button"
+                                data-color="green"></button>
+                        <button style="background-color: blue" class="blue-button color-button"
+                                data-color="blue"></button>
+                        <button style="background-color: black" class="black-button color-button"
+                                data-color="black"></button>
+                    </div>
+                    <div class="tool-wrap">
+                        <button class="tool-button button is-warning pen" style="font-weight: bold">연필</button>
+                        <button class="tool-button button is-warning eraser" style="font-weight: bold">지우개</button>
+                        <button class="tool-button button is-warning clear" style="font-weight: bold">새로 쓰기</button>
+                        {#                    <button class="tool-button send-image">Image</button>#}
+                    </div>
+                    <button class="diary-submit-button button is-warning" style="font-weight: bold">내 기분 알리기</button>
                 </div>
-                <input class="input is-small diary-comment" type="text" placeholder="30자로 내 기분을 표현해보세요" maxlength="30">
-                <div class="radio-color-wrap">
-                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                    <button style="background-color: red" class="red-button color-button" data-color="red"></button>
-                    <button style="background-color: green" class="green-button color-button"
-                            data-color="green"></button>
-                    <button style="background-color: blue" class="blue-button color-button" data-color="blue"></button>
-                    <button style="background-color: black" class="black-button color-button"
-                            data-color="black"></button>
+            </div>
+        </div>
+
+        <div class="card-wrapper background_color" id="card-box">
+            {% for post in all_post %}
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src={{ post.img }}>
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="content">
+                            {{ post.comment }}
+                            <br>
+                            <time datetime="2016-1-1">{{ post.date }}</time>
+                            <br>
+                            <weather>{{ post.weather }}</weather>
+                        </div>
+                    </div>
                 </div>
-                <div class="tool-wrap">
-                    <button class="tool-button button is-warning pen" style="font-weight: bold">연필</button>
-                    <button class="tool-button button is-warning eraser" style="font-weight: bold" >지우개</button>
-                    <button class="tool-button button is-warning clear" style="font-weight: bold" >새로 쓰기</button>
-                    {#                    <button class="tool-button send-image">Image</button>#}
-                </div>
-                <button class="diary-submit-button button is-warning" style="font-weight: bold" >내 기분 알리기</button>
+            {% endfor %}
+            {#TOP으로 올라가는 버튼#}
+            <div style="cursor:pointer;position: fixed;bottom: 10px;right: 10px;" onclick="window.scrollTo(0,0);"> {#cursor 이거는 마우스를 손가락으로 바꿔줌#}
+{#                <a class="button is-warning button" style="color: black" >#}
+{#                    <strong>TOP</strong>#}
+{#                </a>#}
+                <img class="up-img" src="../static/img/up.png">
             </div>
         </div>
     </div>
 
-    <div class="card-wrapper background_color" id="card-box">
-        {% for post in all_post %}
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src={{ post.img }}>
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        {{ post.comment }}
-                        <br>
-                        <time datetime="2016-1-1">{{ post.date }}</time>
-                        <br>
-                        <weather>{{ post.weather }}</weather>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+
+    {#    <div style="position: fixed; bottom: 5px; right: 5px;">#}
+    {#        <a href="/mainpage/"><img scr="top.png" titl="위로가기"></a>#}
+    {#    </div>#}
 {% endblock %}
