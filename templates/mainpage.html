@@ -20,21 +20,21 @@
             <div class="navbar-item">
                 <div class="buttons">
                     {% if logincheck == True %}
-                    <a class="button is-primary" href="/mypage/">
+                    <a class="button is-warning" href="/mypage/">
                         <strong>My page</strong>
                     </a>
                     {% else %}
-                    <a class="button is-primary" href="/usersignup/">
+                    <a class="button is-warning" href="/usersignup/">
                         <strong>Sign up</strong>
                     </a>
                     {% endif %}
 
                     {% if logincheck == True %}
-                    <a class="button is-light" onclick="log_out()"/">
+                    <a class="button is-warning" onclick="log_out()"/>
                         Log out
                     </a>
                     {% else %}
-                    <a class="button is-light" href="/userlogin/">
+                    <a class="button is-warning" href="/userlogin/">
                         Log in
                     </a>
                     {% endif %}
@@ -51,7 +51,7 @@
             {{ userinfo['nickname'] }}님 환영합니다! 오늘의 기분을 표현해보세요!
         </div>
         <button class="drawing-hide-button">
-            😎
+            눌러😎
         </button>
     </div>
     <div class="diary-wrap">
@@ -59,16 +59,17 @@
             <canvas class="canvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
 
             <div class="diary-content">
-                <input class="input is-small diary-date" type="date" placeholder="날짜 선택">
-
-                <div class="select">
-                    <select id="weather-select">
-                        <option>Select dropdown</option>
-                        <option>🌞</option>
-                        <option>☂</option>
-                        <option>🌀</option>
-                        <option>❄</option>
-                    </select>
+                <div class="top-wrapper">
+                    <input class="input is-small diary-date" type="date" placeholder="날짜 선택">
+                    <div class="select">
+                        <select id="weather-select">
+                            <option>Select dropdown</option>
+                            <option>🌞</option>
+                            <option>☂</option>
+                            <option>🌀</option>
+                            <option>❄</option>
+                        </select>
+                    </div>
                 </div>
                 <input class="input is-small diary-comment" type="text" placeholder="30자로 내 기분을 표현해보세요" maxlength="30">
                 <div class="radio-color-wrap">
@@ -79,12 +80,12 @@
                     <button style="background-color: black" class="black-button color-button" data-color="black"></button>
                 </div>
                 <div class="tool-wrap">
-                    <button class="tool-button pen">Pen</button>
-                    <button class="tool-button eraser">Eraser</button>
-                    <button class="tool-button clear">Clear</button>
-                    <button class="tool-button send-image">Image</button>
+                    <button class="tool-button button is-warning pen">연필</button>
+                    <button class="tool-button button is-warning eraser">지우개</button>
+                    <button class="tool-button button is-warning clear">새로 쓰기</button>
+{#                    <button class="tool-button send-image">Image</button>#}
                 </div>
-                <button class="diary-submit-button">공유하기</button>
+                <button class="diary-submit-button button is-warning">내 기분 알리기</button>
             </div>
         </div>
     </div>
