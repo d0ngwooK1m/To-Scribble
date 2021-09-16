@@ -31,8 +31,8 @@
                         {% endif %}
 
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black" onclick="log_out()"/">
-                            <strong>Log out</strong>
+                            <a class="button is-warning button" style="color: black" onclick="log_out()">
+                                <strong>Log out</strong>
                             </a>
                         {% else %}
                             <a class="button is-warning button" style="color: black" href="/userlogin/">
@@ -95,15 +95,14 @@
                 </div>
             </div>
         </div>
-
-        <div class="card-wrapper" id="card-box">
+        <div class="card-wrapper background_color" id="card-box">
             {% for post in all_post %}
                 <div class="card" id="{{ post.postId }}">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src={{ post.img }}>
-                    </figure>
-                </div>
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src={{ post.img }}>
+                        </figure>
+                    </div>
                 <div class="card-content">
                     <div class="content">
                         {{ post.comment }}
@@ -124,8 +123,16 @@
                         class="like-num">{{ post.count }}</span>
                 </a>
             </div>
-        {% endfor %}
+            {% endfor %}
+            <div style="cursor:pointer;position: fixed;bottom: 10px;right: 10px;" onclick="window.scrollTo(0,0);">
+                {#cursor 이거는 마우스를 손가락으로 바꿔줌#}
+
+                <img class="up-img" src="../static/img/up.png">
+            </div>
+
+        </div>
     </div>
+{#    </div>#}
 
 
 {% endblock %}

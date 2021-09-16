@@ -76,6 +76,7 @@ function deleteMypage(postId) {
         }
     });
 }
+
 function log_out() {
     $.removeCookie('mytoken', {path: '/'});
     alert("로그아웃 되었습니다.");
