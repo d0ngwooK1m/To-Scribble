@@ -146,7 +146,7 @@ body {
 
 .diary-submit-button {
     width: 81%;
-    margin: 0 5%;
+    margin: 2% 5%;
     font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
@@ -189,18 +189,23 @@ body {
 }
 
 .quiz-content {
-    width: 600px;
-    height: 400px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
 }
 
 .quiz-right-wrap {
     display: flex;
     flex-direction: column;
-    margin: 80px 10px;
+    margin: 80px auto;
+    align-items: center;
+    justify-content: center;
 }
 
 .quiz-question {
-    margin-top: 10px;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: 1.3rem;
+}
+.select{
+    margin-left: 20px;
 }

@@ -73,7 +73,19 @@
                             <input class="input is-static" type="email" value="{{ userinfo['email'] }}" readonly>
                         </p>
                     </div>
-                    <label class="label">{{ solve }}</label> {# 이런식으로 맞춘개수를 표시해주세요 ! LSJ #}
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Point</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control">
+                            <input class="input is-static" type="number" value="{{ solve }}" readonly>
+                        </p>
+                    </div>
+{#                    <label class="label">{{ solve }}</label> {# 이런식으로 맞춘개수를 표시해주세요 ! LSJ #}
                 </div>
             </div>
             </div>
@@ -126,10 +138,6 @@
                     </span>&nbsp;<span
                         class="like-num">{{ post.count }}</span>
                 </a>
-
-{#                <button class="button is-danger" onclick="deleteMypage({{post.postId}})">#}
-{#                    Delete post#}
-{#                </button>#}
             </div>
         {% endfor %}
     </div>
