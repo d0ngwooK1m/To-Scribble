@@ -2,8 +2,14 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mainpage.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script defer src="{{ url_for('static', filename='js/mainpage.js') }}"></script>
 
+    <!-- 구글폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -20,21 +26,21 @@
                 <div class="navbar-item">
                     <div class="buttons">
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black" href="/mypage/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/mypage/">
                                 <strong>My page</strong>
                             </a>
                         {% else %}
-                            <a class="button is-warning button" style="color: black" href="/usersignup/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/usersignup/">
                                 <strong>Sign up</strong>
                             </a>
                         {% endif %}
 
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black" onclick="log_out()">
-                                <strong>Log out</strong>
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" onclick="log_out()"/">
+                            <strong>Log out</strong>
                             </a>
                         {% else %}
-                            <a class="button is-warning button" style="color: black" href="/userlogin/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/userlogin/">
                                 <strong>Log in</strong>
                             </a>
                         {% endif %}
@@ -47,24 +53,24 @@
 
     <div class="drawing-wrap background_color">
         <div class="drawing-hide-button-wrap">
-            <div class="drawing-hide-theme">
+            <div class="drawing-hide-theme" id="welcome">
                 {{ userinfo['nickname'] }}님 환영합니다! 오늘의 기분을 표현해보세요!
             </div>
-            <button class="drawing-hide-button">
-                눌러😎
+            <button class="drawing-hide-button" id="btn">
+                CLICK😎
             </button>
         </div>
         <div class="diary-wrap">
             <div class="diary">
-                <canvas class="canvas" width="600" height="400">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
+                <canvas class="canvas" width="4800" height="3200">이 브라우저는 캔버스를 지원하지 않습니다.</canvas>
 
                 <div class="diary-content">
                     <div class="top-wrapper">
-                        <input class="input is-small diary-date" type="date" placeholder="날짜 선택">
+                        <input class="input is-small diary-date" id="date-box" type="date" placeholder="날짜 선택">
 
                         <div class="select">
                             <select id="weather-select">
-                                <option>Select dropdown</option>
+                                <option>날씨</option>
                                 <option>🌞</option>
                                 <option>☂</option>
                                 <option>🌀</option>
@@ -94,38 +100,44 @@
                 </div>
             </div>
         </div>
-
         <div class="card-wrapper background_color" id="card-box">
             {% for post in all_post %}
-                <div class="card">
+                <div class="card" id="{{ post.postId }}">
                     <div class="card-image">
                         <figure class="image is-4by3">
                             <img src={{ post.img }}>
                         </figure>
                     </div>
-                    <div class="card-content">
-                        <div class="content">
-                            {{ post.comment }}
-                            <br>
-                            <time datetime="2016-1-1">{{ post.date }}</time>
-                            <br>
-                            <weather>{{ post.weather }}</weather>
-                        </div>
+                <div class="card-content">
+                    <div class="content">
+                        {{ post.comment }}
+                        <br>
+                        <time datetime="2016-1-1">{{ post.date }}</time>
+                        <br>
+                        <weather>{{ post.weather }}</weather>
                     </div>
                 </div>
+                <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
+                    <span class="icon is-small">
+                        {% if post.checklike %}
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                        {% endif %}
+                    </span>&nbsp;<span
+                        class="like-num">{{ post.count }}</span>
+                </a>
+            </div>
             {% endfor %}
-            {#TOP으로 올라가는 버튼#}
-            <div style="cursor:pointer;position: fixed;bottom: 10px;right: 10px;" onclick="window.scrollTo(0,0);"> {#cursor 이거는 마우스를 손가락으로 바꿔줌#}
-{#                <a class="button is-warning button" style="color: black" >#}
-{#                    <strong>TOP</strong>#}
-{#                </a>#}
+            <div style="cursor:pointer;position: fixed;bottom: 10px;right: 10px;" onclick="window.scrollTo(0,0);">
+                {#cursor 이거는 마우스를 손가락으로 바꿔줌#}
+
                 <img class="up-img" src="../static/img/up.png">
             </div>
+
         </div>
     </div>
+{#    </div>#}
 
 
-    {#    <div style="position: fixed; bottom: 5px; right: 5px;">#}
-    {#        <a href="/mainpage/"><img scr="top.png" titl="위로가기"></a>#}
-    {#    </div>#}
 {% endblock %}

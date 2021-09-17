@@ -12,6 +12,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+
+    <!-- JS -->
     <script defer src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}
 
@@ -47,8 +50,8 @@
                     </p>
                 </div>
                 <div class="login_btn">
-                <button onclick="login()" class="button is-medium is-fullwidth">Log in</button>
-                <h2><a href="/usersignup/">혹시 회원이 아니신가요?</a></h2>
+                <button onclick="login()" id="btn" class="button is-medium is-fullwidth">Log in</button>
+                <h2><a href="/usersignup/">Don't have an account?</a></h2>
                 </div>
             </div>
         </div>

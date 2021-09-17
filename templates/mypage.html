@@ -2,7 +2,14 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+
+    <!-- 구글폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -14,14 +21,15 @@
 
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-end">
-                <a class="button is-warning button" style="color: black; margin-right: .5rem" href="/">
+                <div class="navbar-item">
+                <a class="button is-warning button" style="color: black; font-size: 1.3rem; margin-right: .5rem;" href="/">
                     <strong>Mainpage</strong>
                 </a>
-                <a class="button is-warning button" style="color: black" onclick = "log_out()">
+                <a class="button is-warning button" style="color: black; font-size: 1.3rem;" onclick = "log_out()">
                             <strong>Log out</strong>
                 </a>
             </div>
-
+            </div>
         </div>
 
     </nav>
@@ -30,7 +38,7 @@
         <section class="hero">
             <div class="hero-body">
                 <p class="title">
-                    My Diary
+                    My Page
                 </p>
                 <p class="subtitle">
                     ▶ 내 프로필
@@ -43,13 +51,13 @@
             </figure>
             <div class="profile-info">
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Nick Name</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label">닉네임</label>
                     <div class="col-sm-10">
                         <input type="text" readonly class="form-control-plaintext" id="staticEmail">{{ userinfo['nickname'] }}
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                    <label for="staticEmail" class="col-sm-2 col-form-label">이메일</label>
                     <div class="col-sm-10">
                         <input type="text" readonly class="form-control-plaintext" id="staticEmail">{{ userinfo['email'] }}
                     </div>
@@ -57,6 +65,7 @@
             </div>
         </div>
     </div>
+    <div class="bottom">
     <div class="hero-body">
         <p class="subtitle">
             ▶ 나의 기록
@@ -83,10 +92,19 @@
                         <button onclick="deleteMypage()" class="delete"></button>
                     </div>
                 </div>
+
+                <a class="level-item is-sparta" aria-label="heart">
+                    <span class="icon is-small">
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                    </span>&nbsp;<span
+                        class="like-num">{{ post.count }}</span>
+                </a>
+
                 <button class="button is-danger" onclick="deleteMypage({{post.postId}})">
                     Delete post
                 </button>
             </div>
         {% endfor %}
+    </div>
     </div>
 {% endblock %}

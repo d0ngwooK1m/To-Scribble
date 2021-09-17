@@ -68,6 +68,7 @@ const submitBtn = document.querySelector('.diary-submit-button');
 const penBtn = document.querySelector('.pen');
 const eraserBtn = document.querySelector('.eraser');
 const clearBtn = document.querySelector('.clear');
+
 // const imageBtn = document.querySelector('.send-image');
 let drawingMode = false;
 let drawingTool = "pen";
@@ -76,16 +77,20 @@ let colorVal = 'black';
 // context.arc(100, 100, 50, 0, Math.PI * 2, false);
 
 const chooseDrawingTool = (e) => {
+    const toolSize = document.querySelector('#myRange').value;
+    const bound = canvas.getBoundingClientRect();
+    const resizedX = e.layerX * (canvas.width / bound.width);
+    const resizedY = e.layerY  * (canvas.width / bound.width);
     if (drawingTool === "pen") {
         // console.log(e)
         context.globalCompositeOperation = "source-over";
         context.beginPath();
-        context.arc(e.layerX, e.layerY, 10, 0, Math.PI * 2, false);
+        context.arc(resizedX, resizedY, toolSize*2, 0, Math.PI * 2, false);
         context.fill();
     } else if (drawingTool === 'eraser') {
         context.globalCompositeOperation = "destination-out";
         context.beginPath();
-        context.arc(e.layerX, e.layerY, 10, 0, Math.PI * 2, false);
+        context.arc(resizedX, resizedY, toolSize*2, 0, Math.PI * 2, false);
         context.fill();
     }
 };
@@ -127,17 +132,40 @@ clearBtn.addEventListener('click', () => {
 
 //일기 포스팅(등록) API
 const url = canvas.toDataURL('image/png');
-const date_give = document.querySelector('.diary-date');
+
 let weather_give = document.getElementById('weather-select');
 // weather_give = weather_give.options[weather_give.selectedIndex].value;
 const comment_give = document.querySelector('.diary-comment');
 
+
 submitBtn.addEventListener('click', () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth();
+    if (month < 10) {
+        month = `0${today.getMonth()+1}`;
+    }
+    let date = today.getDate();
+    if (date < 10) {
+        date = `0${today.getDate()}`
+    }
+
+    // let date_give = document.querySelector('.diary-date');
+    let date_give = document.getElementById('date-box').value;
+    console.log(date_give)
+    if (date_give == "") {
+        date_give = `${year}-${month}-${date}`;
+    }
+    console.log(date_give)
     const url = canvas.toDataURL('image/png');
+    //🔥
+    let weather = weather_give.options[weather_give.selectedIndex].value;
+    if(weather == '날씨')
+        weather = '☹'
     const postData = {
         img: url,
-        date: date_give.value,
-        weather: weather_give.options[weather_give.selectedIndex].value,
+        date: date_give,
+        weather: weather,
         comment: comment_give.value,
     }
 
@@ -160,4 +188,43 @@ function log_out() {
     alert("로그아웃 되었습니다.")
     window.location.href = "/"
 }
+
+function toggle_like(post_id) {
+    console.log(post_id)
+    let $a_like = $(`#${post_id} a[aria-label='${"heart"}']`)
+    let $i_like = $a_like.find("i")
+    if ($i_like.hasClass("fa-heart-o")) {
+        $.ajax({
+            type: "POST",
+            url: "/update_like",
+            data: {
+                post_id_give: post_id,
+                action_give: "like"
+            },
+            success: function (response) {
+                $i_like.addClass("fa-heart").removeClass("fa-heart-o")
+                console.log(response["count"])
+                $a_like.find("span.like-num").text(response["count"])
+            }
+        })
+    }
+    else{
+        //여기는 좋아요를 취소한거임
+        $.ajax({
+        type: "POST",
+        url: "/update_like",
+        data: {
+            post_id_give: post_id,
+            action_give: "unlike"
+        },
+        success: function (response) {
+            $i_like.addClass("fa-heart-o").removeClass("fa-heart")
+            console.log(response["count"])
+            $a_like.find("span.like-num").text(response["count"])
+            }
+        })
+    }
+}
+
+
 
