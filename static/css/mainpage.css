@@ -44,14 +44,13 @@ body {
 .card-wrapper {
     display: flex;
     flex-wrap : wrap;
-    justify-content: space-around;
     margin: 10px 100px;
 }
 .card {
     flex-shrink: 0;
     width: 380px;
     height: 430px;
-    margin: 10px;
+    margin: 10px 22.875px;
     text-align: center;
 }
 .card-image {
@@ -59,17 +58,19 @@ body {
 }
 .card-content {
     padding: 1.3rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
 }
 .diary-wrap {
     display: flex;
 }
 .diary {
     display: none;
-    justify-content: space-between;
-    width: 100%;
+    /*justify-content: space-between;*/
+    /*width: 100%;*/
     height: 400px;
     background-color: cornsilk;
-    margin: 0 15%;
+    /*margin: 0 15%;*/
+    margin: auto;
     border-radius: .25rem;
     box-shadow: 0 0.5em 1em -0.125em rgba(10,10,10,0.1), 0 0 0 1px rgba(10,10,10,0.02)
 }
@@ -114,22 +115,6 @@ body {
     display: flex;
 }
 
-/*.slider::-webkit-slider-thumb {*/
-/*    background: khaki;*/
-/*    cursor: pointer;*/
-/*}*/
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: khaki; /* Green background */
-    cursor: pointer; /* Cursor on hover */
-}
-details {
-  display: block;
-}
 .color-button {
     width: 20px;
     height: 20px;
@@ -164,9 +149,6 @@ details {
     margin: 0 5%;
     font-family: 'IBM Plex Sans KR', sans-serif;
 }
-/*.card {*/
-/*    box-shadow: none;*/
-/*}*/
 
 
 .buttons {
@@ -182,4 +164,43 @@ details {
 }
 .is-sparta {
     color: #e8344e !important;
+    position: absolute;
+    bottom: 17.5%;
+    right: 27%;
+}
+
+.quiz {
+    display: none;
+    /*justify-content: space-between;*/
+    /*width: 100%;*/
+    width: 1200px;
+    height: 400px;
+    background-color: cornsilk;
+    /*margin: 0 15%;*/
+    margin: auto;
+    border-radius: .25rem;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10,10,10,0.1), 0 0 0 1px rgba(10,10,10,0.02)
+}
+
+.quiz-image-wrap {
+    width: 600px;
+    height: 400px;
+    background-color: white;
+}
+
+.quiz-content {
+    width: 600px;
+    height: 400px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.quiz-right-wrap {
+    display: flex;
+    flex-direction: column;
+    margin: 80px 10px;
+}
+
+.quiz-question {
+    margin-top: 10px;
 }

@@ -73,6 +73,7 @@
                             <input class="input is-static" type="email" value="{{ userinfo['email'] }}" readonly>
                         </p>
                     </div>
+                    <label class="label">{{ solve }}</label> {# 이런식으로 맞춘개수를 표시해주세요 ! LSJ #}
                 </div>
             </div>
             </div>
@@ -112,7 +113,6 @@
                             {{post.comment}}
                         </div>
                         <div>
-                            <br>
                             <time datetime="2016-1-1">{{post.date}}</time>
                             <weather>{{post.weather}}</weather>
                         </div>
