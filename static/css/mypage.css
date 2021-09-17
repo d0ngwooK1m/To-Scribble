@@ -36,6 +36,7 @@ body{
     width: 100%;
     margin: auto;
     padding: 3% 7%;
+    border-bottom: 1px solid black;
 }
 #profile-box {
     display: flex;
@@ -43,6 +44,7 @@ body{
     /*width: 90%;*/
     width: 60%;
     margin: 1% 5% 0% 5%;
+    border: 1px solid black;
 }
 
 #profile-image {
@@ -52,7 +54,8 @@ body{
 .profile-info {
     display: flex;
     flex-direction: column;
-    margin-left: 45px;
+    justify-content: center;
+    margin-left: 3%;
 }
 
 .hero-body {
@@ -61,16 +64,23 @@ body{
 
 .card-wrapper {
     display: flex;
-    justify-content: space-evenly;
     flex-wrap : wrap;
+    justify-content: space-around;
+    margin: 10px 100px;
 }
 
 .card {
     flex-shrink: 0;
-    width: 20%;
-    height: 10%;
-    margin: 10px
+    width: 380px;
+    height: 430px;
+    margin: 10px;
+    border: 1px solid black;
+    text-align: center;
 }
+.card-image {
+    border-bottom: 1px solid black;
+}
+
 .content_text {
     height: 30px;
 }
@@ -81,7 +91,7 @@ body{
 }
 
 .bottom {
-    padding: 5% 7%;
+    padding: 7% 7%;
 
 }
 .title {
@@ -90,11 +100,29 @@ body{
 }
 
 .subtitle {
-    font-family: 'Jua', sans-serif;
+    font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: 1.3rem;
 }
 
 .is-sparta {
     color: #e8344e !important;
 }
+.label {
+    font-family: 'Staatliches', cursive;
+}
+.field-label .label {
+    font-size: 1.3rem;
+}
 
+.is-static {
+    /*font-family: 'Staatliches', cursive;*/
+}
+
+.delete {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+}
+.card-content {
+    padding: 1.3rem;
+}
