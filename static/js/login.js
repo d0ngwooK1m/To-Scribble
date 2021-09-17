@@ -21,3 +21,7 @@ function login() {
     })
 }
 
+function main(){
+    window.location.href = "/"
+}
+

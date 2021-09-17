@@ -8,7 +8,8 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">#}
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+{#    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">#}
     <!-- 구글폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,17 +28,17 @@
         </div>
         <div class="vl"></div>
         <div class="right ">
-            <div class="logo">
+            <div class="logo" onclick="main()">
                 <h1>To-Scribble</h1>
             </div>
-            <div class="login-form ">
+            <div class="login-form">
                 <div class="field">
                     <p class="control has-icons-left has-icons-right">
                         <input class="input" id="useremail-id" type="email" placeholder="Email">
-                        <span class="icon is-small is-left">
+                        <span class="icon is-small is-left" id="email_icon">
                         <i class="fas fa-envelope"></i>
                          </span>
-                        <span class="icon is-small is-right">
+                        <span class="icon is-small is-right" id="check_icon">
                          <i class="fas fa-check"></i>
                         </span>
                     </p>
@@ -45,7 +46,7 @@
                 <div class="field">
                     <p class="control has-icons-left">
                         <input class="input" id="userpw-id" type="password" placeholder="Password">
-                        <span class="icon is-small is-left">
+                        <span class="icon is-small is-left" id="password_icon">
                         <i class="fas fa-lock"></i>
                         </span>
                     </p>

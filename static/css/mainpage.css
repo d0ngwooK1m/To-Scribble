@@ -44,14 +44,13 @@ body {
 .card-wrapper {
     display: flex;
     flex-wrap : wrap;
-    justify-content: space-around;
     margin: 10px 100px;
 }
 .card {
     flex-shrink: 0;
     width: 380px;
     height: 430px;
-    margin: 10px;
+    margin: 10px 22.875px;
     text-align: center;
 }
 .card-image {
@@ -59,6 +58,7 @@ body {
 }
 .card-content {
     padding: 1.3rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
 }
 .diary-wrap {
     display: flex;
@@ -164,6 +164,9 @@ body {
 }
 .is-sparta {
     color: #e8344e !important;
+    position: absolute;
+    bottom: 17.5%;
+    right: 27%;
 }
 
 .quiz {
