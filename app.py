@@ -14,7 +14,7 @@ SECRET_KEY = 'secret'
 oss = platform.system()
 server = 'mongodb://test:test@localhost'
 local = 'localhost'
-if oss is 'Windows':
+if oss == 'Windows': # 문자열과 쓰여서 is 대신 == 으로 변경
     print("Local")
     client = MongoClient(local, 27017)
 else:
@@ -84,9 +84,10 @@ def mypage():
         user_info = db.users.find_one({"email": payload['email']})
         my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
         my_posts.reverse()
+        solve = db.solves.count_documents({"useremail": payload['email']})
         for post in my_posts:
             post['count'] = db.likes.count_documents({"post_id": post["postId"]})
-        return render_template('mypage.html',my_posts=my_posts, userinfo=user_info)
+        return render_template('mypage.html',my_posts=my_posts, userinfo=user_info,solve = str(solve))
     except jwt.ExpiredSignatureError:
         return redirect(url_for('fail', msg="로그인 시간 만료"))
     except jwt.exceptions.DecodeError:
@@ -103,16 +104,16 @@ def posting():
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
     imageurl = result["img"]
-    postID = str(random.random())[3:10]
+    postID = '3'+str(random.random())[3:10]
     # postID = '01234'
-    if postID[0] == '0':
-        postID = postID[1:]
+    # if postID[0] == '0':
+    #     postID = postID[1:]
     imagepath = f'../static/postimg/{postID}.jpg'
     urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
     ###img 저장 부분###
 
     post = {
-        "postId": postID, # split 해서 2번째 자리부터 가져오기 나중에처리.
+        "postId": postID, # a+랜덤숫자배열
         "email": payload["email"],
         "img": imagepath,
         "date": result["date"],
@@ -174,7 +175,7 @@ def api_loginpage():
             'email': email_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=100) #만료시간
         }
-        if oss is 'Windows':
+        if oss == 'Windows': # 문자열과 쓰여서 is 대신 == 으로 변경
             token = jwt.encode(payload, SECRET_KEY , algorithm='HS256')#decode('utf-8')
         else:
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
@@ -245,6 +246,48 @@ def update_like():
         return jsonify({"result": "success", 'msg': 'updated', "count": str(count)})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("mainpage"))
+
+### 퀴즈 얻어오기 ###
+@app.route('/getquiz', methods=['GET'])
+def get_quiz(): #userinfo_mypage()
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    posts = list(db.posts.find({}, {'_id': False}))
+    ret = []
+    for post in posts:
+        if (post['email'] != payload['email']) and (bool(db.solves.find_one({"post_id": post["postId"], "useremail": payload['email']})) == False):
+            dic = {
+                'postId' :  post["postId"],
+                'weather' : post["weather"],
+                'img' : post['img'],
+            }
+            ret.append(dic)
+    print(ret)
+    if len(ret) == 0:
+        return jsonify({'msg': "AllSolve"})
+    else:
+        return jsonify({'msg' : "GET",'quiz': ret[random.randrange(0, len(ret))]})
+    # 모든 포스트를 리스트로 불러오기
+    # 리스트를 돌면서 포스트ID와 현재 접속한 userID 를 비교해가면서.
+    # 자신이 작성하거나, 이미 맞춘 포스트를 제외하고 ret에 img,postID,weather 만 저장한다.
+    # 그후에 ret이 0 이면 현재올라와있는 post는 모두 맞춘거니까 아무것도반환하지 않는다.
+    # 0이 아니라면 그 리스트중 랜덤으로 하나 뽑아서 반환해준다.
+
+@app.route('/solve', methods=['POST'])
+def Solve():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    result = request.get_json()
+    post_id_receive = result["post_id_give"]
+    doc = {
+        "post_id": post_id_receive,
+        "useremail": payload['email'],
+    }
+    db.solves.insert_one(doc)
+    return jsonify({"result": "success"})
+    #이함수를 들어왔다는거 자체가 solve라고 생각하고 코드함.
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
