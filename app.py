@@ -12,9 +12,9 @@ SECRET_KEY = 'secret'
 client = MongoClient('localhost', 27017)
 db = client.To_Scribble
 
-UPLOAD_FOLDER = 'static/uploads/'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# UPLOAD_FOLDER = 'static/uploads/'
+# ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def loginCheck():
     if request.cookies.get('mytoken') is not None:

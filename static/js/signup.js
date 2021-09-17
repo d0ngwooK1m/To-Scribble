@@ -5,6 +5,9 @@ function isEmail(asValue) {
 
 function makeInfo() {
     let nick = $('#nick-id').val()
+	if (nick ==='guest'){
+		alert('guest는 닉네임으로 사용할 수 없습니다ㅠ');
+	}
 	// let regExpNickname = /^[a-zA-Z0-9-_ㄱ-ㅎ|ㅏ-ㅣ|가-힣]{3,16}$/
 	// if (nick.match(regExpNickname) == null) {
 	// 	return alert('닉네임은 영어, 한글, -, _ 를 사용가능하며, 3~16자 사이로 작성해야 합니다!')
