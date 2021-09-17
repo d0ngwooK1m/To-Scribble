@@ -100,7 +100,7 @@ function previewImage(targetObj, View_area) {
 			img.file = file;
 
             img.style.display = 'block';
-            img.style.marginLeft = '40%' ;
+            // img.style.marginLeft = '40%' ;
             img.style.marginbottom = '10px' ;
 			img.style.width = '476px';
 			img.style.height = '472px';
