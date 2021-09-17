@@ -31,6 +31,7 @@ body {
     border-bottom: 2px solid black;
     position: relative;
     bottom: 70px;
+    cursor: pointer;
 }
 
 .login-form {
@@ -60,4 +61,16 @@ body {
     font-family: 'Staatliches', cursive;
     font-size: 1.3rem;
     border: 1px solid black;
+}
+
+#email_icon  {
+    left: 25%;
+}
+
+#password_icon {
+    left: 25%;
+}
+
+#check_icon{
+    right: 25%;
 }
