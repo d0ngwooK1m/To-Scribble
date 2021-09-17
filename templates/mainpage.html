@@ -37,7 +37,7 @@
                         {% endif %}
 
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" onclick="log_out()"/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" onclick="log_out()"/>
                             <strong>Log out</strong>
                             </a>
                         {% else %}
@@ -57,9 +57,14 @@
             <div class="drawing-hide-theme" id="welcome">
                 {{ userinfo['nickname'] }}님 환영합니다! 오늘의 기분을 표현해보세요!
             </div>
-            <button class="drawing-hide-button" id="btn">
-                CLICK😎
-            </button>
+            <div class="buttons-wrap">
+                <button class="quiz-hide-button" id="btn">
+                    QUIZ😮
+                </button>
+                <button class="drawing-hide-button" id="btn">
+                    DRAW😎
+                </button>
+            </div>
         </div>
         <div class="diary-wrap">
             <div class="diary">
@@ -99,6 +104,28 @@
                     </div>
                     <button class="diary-submit-button button is-warning" style="font-weight: bold">내 기분 알리기</button>
                 </div>
+            </div>
+        </div>
+
+        <div class="quiz">
+            <div class="quiz-image-wrap">
+                <img src="{{ url_for('static', filename='img/quiz_test_img.jpg') }}" alt="">
+            </div>
+
+            <div class="quiz-right-wrap">
+                <div class="quiz-content">
+                    <div class="quiz-question">이 친구의 오늘 기분은 어떨까요?</div>
+                    <div class="select">
+                        <select id="weather-select">
+                            <option>날씨</option>
+                            <option>🌞</option>
+                            <option>☂</option>
+                            <option>🌀</option>
+                            <option>❄</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="diary-submit-button button is-warning" style="font-weight: bold">공감해주기</button>
             </div>
         </div>
 

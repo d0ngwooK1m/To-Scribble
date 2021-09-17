@@ -14,7 +14,7 @@ SECRET_KEY = 'secret'
 oss = platform.system()
 server = 'mongodb://test:test@localhost'
 local = 'localhost'
-if oss is 'Windows':
+if oss == 'Windows': # 문자열과 쓰여서 is 대신 == 으로 변경
     print("Local")
     client = MongoClient(local, 27017)
 else:
@@ -103,16 +103,16 @@ def posting():
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
     imageurl = result["img"]
-    postID = str(random.random())[3:10]
+    postID = '3'+str(random.random())[3:10]
     # postID = '01234'
-    if postID[0] == '0':
-        postID = postID[1:]
+    # if postID[0] == '0':
+    #     postID = postID[1:]
     imagepath = f'../static/postimg/{postID}.jpg'
     urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
     ###img 저장 부분###
 
     post = {
-        "postId": postID, # split 해서 2번째 자리부터 가져오기 나중에처리.
+        "postId": postID, # a+랜덤숫자배열
         "email": payload["email"],
         "img": imagepath,
         "date": result["date"],
@@ -174,7 +174,7 @@ def api_loginpage():
             'email': email_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=100) #만료시간
         }
-        if oss is 'Windows':
+        if oss == 'Windows': # 문자열과 쓰여서 is 대신 == 으로 변경
             token = jwt.encode(payload, SECRET_KEY , algorithm='HS256')#decode('utf-8')
         else:
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')

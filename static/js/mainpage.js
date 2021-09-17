@@ -3,8 +3,13 @@ $(document).ready(function () {
             });
 
 let checkOpened = false;
+let checkQuizBtnOpened = false;
 const popupBtn = document.querySelector('.drawing-hide-button');
+const quizBtn = document.querySelector('.quiz-hide-button');
 const testBox = document.querySelector('.diary');
+const quizBox = document.querySelector('.quiz');
+const cardWrapper = document.querySelector('.card-wrapper');
+
 
 // const openCheck = () => {
 //     if (testBox.style.display === "none") return
@@ -14,13 +19,44 @@ const testBox = document.querySelector('.diary');
 
 popupBtn.addEventListener('click', () => {
     if (checkOpened === false) {
+        if (checkQuizBtnOpened === true) {
+            checkQuizBtnOpened = false;
+            quizBox.style.display = "none";
+            testBox.style.display = "flex";
+            cardWrapper.style.display = "flex";
+            return checkOpened = true;
+        }
         checkOpened = true;
         testBox.style.display = "flex";
+        quizBox.style.display = "none";
+        checkQuizBtnOpened = false;
     } else {
         checkOpened = false;
         testBox.style.display = "none";
     }
 });
+
+quizBtn.addEventListener('click', () => {
+   if (checkQuizBtnOpened === false) {
+       if (checkOpened === true) {
+           checkOpened = false;
+           testBox.style.display = "none";
+           quizBox.style.display = "flex";
+           cardWrapper.style.display = "none";
+           return checkQuizBtnOpened = true;
+       }
+       checkQuizBtnOpened = true;
+       quizBox.style.display = "flex";
+       testBox.style.display = "none";
+       checkOpened = false;
+       cardWrapper.style.display = "none";
+   } else {
+       checkQuizBtnOpened = false;
+       quizBox.style.display = "none";
+       cardWrapper.style.display = "flex";
+   }
+});
+
 function showAllpost() {
                 $.ajax({
                     type: "GET",
