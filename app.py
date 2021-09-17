@@ -6,6 +6,7 @@ import hashlib
 import datetime
 import urllib.request
 import platform
+import os
 
 app = Flask(__name__)
 SECRET_KEY = 'secret'
@@ -204,6 +205,9 @@ def userinfo_mypage():
 @app.route('/mypage/delete', methods=['POST'])
 def delete_mypage():
     postId_receive = request.form['postId_give']
+    imgpath = db.posts.find_one({'postId': postId_receive})['img'][3:]
+    if os.path.isfile(imgpath):
+        os.remove(imgpath)
     db.posts.delete_one({'postId': postId_receive})
     print(db.likes.remove({'post_id':postId_receive}))
     return jsonify({'msg': '삭제 완료!'})

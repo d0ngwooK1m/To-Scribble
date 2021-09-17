@@ -1,7 +1,7 @@
 body
 {
   background-color:whitesmoke;
-    height : 100vh;
+
 }
 
 .signup_box {
@@ -9,6 +9,8 @@ body
     justify-content: center;
     flex-direction: column;
     height: 100%;
+    padding-top: 4%;
+    padding-bottom: 4%;
 }
 
 .logo {

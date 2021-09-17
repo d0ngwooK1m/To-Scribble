@@ -139,7 +139,7 @@
 
             <div class="quiz-right-wrap">
                 <div class="quiz-content">
-                    <div class="quiz-question">이 친구의 오늘 기분은 어떨까요?</div>
+                    <div class="quiz-question">이 친구의 기분은 어떨까요?</div>
                     <div class="select">
                         <select id="my-answer">
                             <option>기분</option>
@@ -163,21 +163,21 @@
         <div class="card-wrapper background_color" id="card-box">
             {% for post in all_post %}
                 <div class="card" id="{{ post.postId }}">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src={{ post.img }}>
-                    </figure>
-                </div>
-
-                <div class="card-content">
-                    <div class="content">
-                        {{ post.comment }}
-                        <br>
-                        <time datetime="2016-1-1">{{ post.date }}</time>
-                        <br>
-                        <weather>{{ post.weather }}</weather>
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src={{ post.img }}>
+                        </figure>
                     </div>
-                    <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
+
+                    <div class="card-content">
+                        <div class="content">
+                            {{ post.comment }}
+                            <br>
+                            <time datetime="2016-1-1">{{ post.date }}</time>
+                            <br>
+                            <weather>{{ post.weather }}</weather>
+                        </div>
+                        <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
                         <span class="icon is-small">
                         {% if post.checklike %}
                             <i class="fa fa-heart" aria-hidden="true"></i>
@@ -185,8 +185,9 @@
                             <i class="fa fa-heart-o" aria-hidden="true"></i>
                         {% endif %}
                         </span>&nbsp;
-                        <span class="like-num">{{ post.count }}</span>
-                    </a>
+                            <span class="like-num">{{ post.count }}</span>
+                        </a>
+                    </div>
                 </div>
             {% endfor %}
             <div style="cursor:pointer;position: fixed;bottom: 10px;right: 10px;" onclick="window.scrollTo(0,0);">
@@ -195,7 +196,7 @@
                 <img class="up-img" src="../static/img/up.png">
             </div>
 
-            </div>
+
         </div>
         {#    </div>#}
 
