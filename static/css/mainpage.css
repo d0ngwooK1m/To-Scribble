@@ -44,13 +44,21 @@ body {
 .card-wrapper {
     display: flex;
     flex-wrap : wrap;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    margin: 10px 100px;
 }
 .card {
     flex-shrink: 0;
-    width: 20%;
-    height: 10%;
-    margin: 10px
+    width: 380px;
+    height: 430px;
+    margin: 10px;
+    text-align: center;
+}
+.card-image {
+    border-bottom: 0.5px solid #adadad;
+}
+.card-content {
+    padding: 1.3rem;
 }
 .diary-wrap {
     display: flex;
@@ -92,6 +100,14 @@ body {
     width: 570px;
     height: 35px;
     margin: 5px 10px;
+}
+
+.diary-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .slidecontainer {
@@ -138,11 +154,13 @@ body {
 
 .tool-button {
     width: 120px;
+    font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .diary-submit-button {
-    width: 90%;
+    width: 81%;
     margin: 0 5%;
+    font-family: 'IBM Plex Sans KR', sans-serif;
 }
 /*.card {*/
 /*    box-shadow: none;*/
@@ -157,7 +175,7 @@ body {
     font-family: 'Staatliches', cursive;
 }
 #welcome {
-    font-family: 'Jua', sans-serif;
+    font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: 1.3rem;
 }
 .is-sparta {

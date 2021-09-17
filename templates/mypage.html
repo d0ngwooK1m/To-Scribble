@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -50,18 +51,44 @@
                 <img class="is-rounded" src="{{ userinfo['image'] }}">
             </figure>
             <div class="profile-info">
-                <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">닉네임</label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" id="staticEmail">{{ userinfo['nickname'] }}
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">NickName</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control">
+                            <input class="input is-static" type="email" value="{{ userinfo['nickname'] }}" readonly>
+                        </p>
                     </div>
                 </div>
-                <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">이메일</label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" id="staticEmail">{{ userinfo['email'] }}
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Email</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control">
+                            <input class="input is-static" type="email" value="{{ userinfo['email'] }}" readonly>
+                        </p>
                     </div>
                 </div>
+            </div>
+            </div>
+{#            <div class="profile-info">#}
+{#                <div class="mb-3 row">#}
+{#                    <label for="staticEmail" class="col-sm-2 col-form-label">닉네임</label>#}
+{#                    <div class="col-sm-10">#}
+{#                        <input type="text" readonly class="form-control-plaintext" id="staticEmail">{{ userinfo['nickname'] }}#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="mb-3 row">#}
+{#                    <label for="staticEmail" class="col-sm-2 col-form-label">이메일</label>#}
+{#                    <div class="col-sm-10">#}
+{#                        <input type="text" readonly class="form-control-plaintext" id="staticEmail">{{ userinfo['email'] }}#}
+{#                    </div>#}
+{#                </div>#}
             </div>
         </div>
     </div>
@@ -89,7 +116,7 @@
                             <time datetime="2016-1-1">{{post.date}}</time>
                             <weather>{{post.weather}}</weather>
                         </div>
-                        <button onclick="deleteMypage()" class="delete"></button>
+                        <button onclick="deleteMypage({{post.postId}})" class="delete"></button>
                     </div>
                 </div>
 
@@ -100,9 +127,9 @@
                         class="like-num">{{ post.count }}</span>
                 </a>
 
-                <button class="button is-danger" onclick="deleteMypage({{post.postId}})">
-                    Delete post
-                </button>
+{#                <button class="button is-danger" onclick="deleteMypage({{post.postId}})">#}
+{#                    Delete post#}
+{#                </button>#}
             </div>
         {% endfor %}
     </div>

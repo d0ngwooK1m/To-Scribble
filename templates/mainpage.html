@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -78,8 +79,8 @@
                             </select>
                         </div>
                     </div>
-                    <input class="input is-small diary-comment" type="text" placeholder="30자로 내 기분을 표현해보세요"
-                           maxlength="30">
+                    <input class="input is-small diary-comment" type="text" placeholder="짧은 글로 내 기분을 표현하세요!"
+                           maxlength="20">
                     <div class="radio-color-wrap">
                         <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
                         <button style="background-color: red" class="red-button color-button" data-color="red"></button>
@@ -100,6 +101,7 @@
                 </div>
             </div>
         </div>
+
         <div class="card-wrapper background_color" id="card-box">
             {% for post in all_post %}
                 <div class="card" id="{{ post.postId }}">

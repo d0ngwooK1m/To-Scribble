@@ -139,6 +139,10 @@ const comment_give = document.querySelector('.diary-comment');
 
 
 submitBtn.addEventListener('click', () => {
+    const checkGuest = document.getElementById('welcome').valueOf().innerText.split('').slice(0,5).join('')  //guest
+    if (checkGuest==='guest'){
+        return alert('회원가입을 해주세요!');
+    }
     const today = new Date();
     const year = today.getFullYear();
     let month = today.getMonth();
@@ -190,7 +194,11 @@ function log_out() {
 }
 
 function toggle_like(post_id) {
-    console.log(post_id)
+    // console.log(post_id)
+    const checkGuest = document.getElementById('welcome').valueOf().innerText.split('').slice(0,5).join('')
+    if (checkGuest==='guest'){
+        return alert('회원가입을 해주세요!');
+    }
     let $a_like = $(`#${post_id} a[aria-label='${"heart"}']`)
     let $i_like = $a_like.find("i")
     if ($i_like.hasClass("fa-heart-o")) {
