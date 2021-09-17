@@ -5,11 +5,22 @@ import jwt
 import hashlib
 import datetime
 import urllib.request
+import platform
 
 app = Flask(__name__)
 SECRET_KEY = 'secret'
 #app.secret_key = 'tmxmflddmfhdkanrjsk'
-client = MongoClient('localhost', 27017)
+
+oss = platform.system()
+server = 'mongodb://test:test@localhost'
+local = 'localhost'
+if oss is 'Windows':
+    print("Local")
+    client = MongoClient(local, 27017)
+else:
+    print("Server")
+    client = MongoClient(server, 27017)
+
 db = client.To_Scribble
 
 # UPLOAD_FOLDER = 'static/uploads/'
@@ -163,7 +174,10 @@ def api_loginpage():
             'email': email_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=100) #만료시간
         }
-        token = jwt.encode(payload, SECRET_KEY , algorithm='HS256')#decode('utf-8')
+        if oss is 'Windows':
+            token = jwt.encode(payload, SECRET_KEY , algorithm='HS256')#decode('utf-8')
+        else:
+            token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
         return jsonify({'result': 'success', 'token': token})
     else:
         return jsonify({'result': 'fail', 'msg': '이메일/비밀번호가 일치하지 않습니다.'})
