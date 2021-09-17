@@ -76,11 +76,15 @@
 
                         <div class="select">
                             <select id="weather-select">
-                                <option>날씨</option>
-                                <option>🌞</option>
-                                <option>☂</option>
-                                <option>🌀</option>
-                                <option>❄</option>
+                                <option>기분</option>
+                                <option>😀</option>
+                                <option>😁</option>
+                                <option>😥</option>
+                                <option>😭</option>
+                                <option>🥱</option>
+                                <option>😪</option>
+                                <option>😑</option>
+                                <option>😎</option>
                             </select>
                         </div>
                     </div>
@@ -109,23 +113,27 @@
 
         <div class="quiz">
             <div class="quiz-image-wrap">
-                <img src="{{ url_for('static', filename='img/quiz_test_img.jpg') }}" alt="">
+                <img class="quiz-image" src="" alt="">
             </div>
 
             <div class="quiz-right-wrap">
                 <div class="quiz-content">
                     <div class="quiz-question">이 친구의 오늘 기분은 어떨까요?</div>
                     <div class="select">
-                        <select id="weather-select">
-                            <option>날씨</option>
-                            <option>🌞</option>
-                            <option>☂</option>
-                            <option>🌀</option>
-                            <option>❄</option>
+                        <select id="my-answer">
+                                <option>기분</option>
+                                <option>😀</option>
+                                <option>😁</option>
+                                <option>😥</option>
+                                <option>😭</option>
+                                <option>🥱</option>
+                                <option>😪</option>
+                                <option>😑</option>
+                                <option>😎</option>
                         </select>
                     </div>
                 </div>
-                <button class="diary-submit-button button is-warning" style="font-weight: bold">공감해주기</button>
+                <button class="diary-submit-button button is-warning quiz-submit-button" style="font-weight: bold">공감해주기</button>
             </div>
         </div>
 

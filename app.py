@@ -255,7 +255,7 @@ def get_quiz(): #userinfo_mypage()
     posts = list(db.posts.find({}, {'_id': False}))
     ret = []
     for post in posts:
-        if (post['email'] != payload['email']) and (bool(db.solves.find_one({"postId": post["postId"], "useremail": payload['email']})) == False):
+        if (post['email'] != payload['email']) and (bool(db.solves.find_one({"post_id": post["postId"], "useremail": payload['email']})) == False):
             dic = {
                 'postId' :  post["postId"],
                 'weather' : post["weather"],
@@ -277,7 +277,8 @@ def get_quiz(): #userinfo_mypage()
 def Solve():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    post_id_receive = request.form["post_id_give"]
+    result = request.get_json()
+    post_id_receive = result["post_id_give"]
     doc = {
         "post_id": post_id_receive,
         "useremail": payload['email'],

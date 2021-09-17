@@ -71,7 +71,7 @@ function deleteMypage(postId) {
         data: {postId_give: postId},
         success: function (response) {
             alert(response['msg']);
-            // window.location.reload()
+            window.location.reload()
         }
     });
 }
