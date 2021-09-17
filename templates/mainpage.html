@@ -27,21 +27,25 @@
                 <div class="navbar-item">
                     <div class="buttons">
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/mypage/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;"
+                               href="/mypage/">
                                 <strong>My page</strong>
                             </a>
                         {% else %}
-                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/usersignup/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;"
+                               href="/usersignup/">
                                 <strong>Sign up</strong>
                             </a>
                         {% endif %}
 
                         {% if logincheck == True %}
-                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" onclick="log_out()"/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;"
+                               onclick="log_out()"/">
                             <strong>Log out</strong>
                             </a>
                         {% else %}
-                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;" href="/userlogin/">
+                            <a class="button is-warning button" style="color: black; font-size: 1.3rem;"
+                               href="/userlogin/">
                                 <strong>Log in</strong>
                             </a>
                         {% endif %}
@@ -83,14 +87,50 @@
                            maxlength="20">
                     <div class="radio-color-wrap">
                         <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                        <button style="background-color: red" class="red-button color-button" data-color="red"></button>
+                        <button style="background-color: red" class="red-button color-button"
+                                data-color="red"></button>
+                        <button style="background-color: pink" class="pink-button color-button"
+                                data-color="pink"></button>
+                        <button style="background-color: orange" class="orange-button color-button"
+                                data-color="orange"></button>
+                        <button style="background-color: yellow" class="yellow-button color-button"
+                                data-color="yellow"></button>
+                        <button style="background-color: lightgreen" class="lightgreen-button color-button"
+                                data-color="lightgreen"></button>
                         <button style="background-color: green" class="green-button color-button"
                                 data-color="green"></button>
+                        <button style="background-color: lightskyblue" class="lightskyblue-button color-button"
+                                data-color="lightskyblue"></button>
                         <button style="background-color: blue" class="blue-button color-button"
                                 data-color="blue"></button>
+                        <button style="background-color: mediumpurple" class="mediumpurple-button color-button"
+                                data-color="mediumpurple"></button>
+                        <button style="background-color: purple" class="purple-button color-button"
+                                data-color="purple"></button>
+                        <button style="background-color: saddlebrown" class="saddlebrown-button color-button"
+                                data-color="saddlebrown"></button>
                         <button style="background-color: black" class="black-button color-button"
                                 data-color="black"></button>
                     </div>
+{#                    <details>#}
+{#                           <summary>More Color</summary>#}
+{#                            <div>#}
+{#                            <button style="background-color: orange" class="orange-button color-button"#}
+{#                                data-color="orange"></button>#}
+{#                            <button style="background-color: yellow" class="yellow-button color-button"#}
+{#                                data-color="yellow"></button>#}
+{#                            <button style="background-color: pink" class="pink-button color-button"#}
+{#                                data-color="pink"></button>#}
+{#                            <button style="background-color: lightgreen" class="lightgreen-button color-button"#}
+{#                                data-color="lightgreen"></button>#}
+{#                            <button style="background-color: skyblue" class="skyblue-button color-button"#}
+{#                                data-color="skyblue"></button>#}
+{#                            <button style="background-color: mediumpurple" class="mediumpurple-button color-button"#}
+{#                                data-color="mediumpurple"></button>#}
+{#                            <button style="background-color: saddlebrown" class="saddlebrown-button color-button"#}
+{#                                data-color="saddlebrown"></button>#}
+{#                            </div>#}
+{#                    </details>#}
                     <div class="tool-wrap">
                         <button class="tool-button button is-warning pen" style="font-weight: bold">연필</button>
                         <button class="tool-button button is-warning eraser" style="font-weight: bold">지우개</button>
@@ -110,16 +150,16 @@
                             <img src={{ post.img }}>
                         </figure>
                     </div>
-                <div class="card-content">
-                    <div class="content">
-                        {{ post.comment }}
-                        <br>
-                        <time datetime="2016-1-1">{{ post.date }}</time>
-                        <br>
-                        <weather>{{ post.weather }}</weather>
+                    <div class="card-content">
+                        <div class="content">
+                            {{ post.comment }}
+                            <br>
+                            <time datetime="2016-1-1">{{ post.date }}</time>
+                            <br>
+                            <weather>{{ post.weather }}</weather>
+                        </div>
                     </div>
-                </div>
-                <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
+                    <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
                     <span class="icon is-small">
                         {% if post.checklike %}
                             <i class="fa fa-heart" aria-hidden="true"></i>
@@ -127,9 +167,9 @@
                             <i class="fa fa-heart-o" aria-hidden="true"></i>
                         {% endif %}
                     </span>&nbsp;<span
-                        class="like-num">{{ post.count }}</span>
-                </a>
-            </div>
+                            class="like-num">{{ post.count }}</span>
+                    </a>
+                </div>
             {% endfor %}
             <div style="cursor:pointer;position: fixed;bottom: 10px;right: 10px;" onclick="window.scrollTo(0,0);">
                 {#cursor 이거는 마우스를 손가락으로 바꿔줌#}
@@ -139,7 +179,7 @@
 
         </div>
     </div>
-{#    </div>#}
+    {#    </div>#}
 
 
 {% endblock %}
