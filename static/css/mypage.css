@@ -44,7 +44,6 @@ body{
     /*width: 90%;*/
     width: 60%;
     margin: 1% 5% 0% 5%;
-    border: 1px solid black;
 }
 
 #profile-image {
@@ -74,11 +73,10 @@ body{
     width: 380px;
     height: 430px;
     margin: 10px;
-    border: 1px solid black;
     text-align: center;
 }
 .card-image {
-    border-bottom: 1px solid black;
+    border-bottom: 0.5px solid #adadad;
 }
 
 .content_text {
