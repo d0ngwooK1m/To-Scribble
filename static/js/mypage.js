@@ -4,17 +4,6 @@ $(document).ready(function () {
     // showmypost();
 });
 
-function showUser() {
-    $.ajax({
-        type: 'GET',
-        url: '/mypage/userinfo',
-        data: {},
-        success: function (response) {
-            // window.location.reload()
-        }
-    });
-}
-
 // function showmypost() {
 //     $.ajax({
 //         type: 'GET',

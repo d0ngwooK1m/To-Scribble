@@ -187,19 +187,19 @@ def api_loginpage():
 
 @app.route('/mypage/userinfo', methods=['GET'])
 def userinfo_mypage():
+    # JWT 로그인 인증 방식, 토큰값 가져오기
     token_receive = request.cookies.get('mytoken')
     try:
+        # 로그인한 유저의 쿠키를 해쉬코드로 만들기
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # 유저 정보 DB에서 로그인한 이메일 값으로 찾기
         user_info = db.users.find_one({"email": payload['email']})
-
+        #로그인한 이메일 정보를 가지고 마이페이지로 이동
         return render_template('mypage.html', userinfo=user_info)
 
     except jwt.exceptions.DecodeError:
+        #로그인한 정보가 존재하지 않을 경우 메인페이지로 이동
         return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
-
-
-#    return jsonify({'msg': user_info})
-
 
 
 @app.route('/mypage/delete', methods=['POST'])
