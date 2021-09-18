@@ -1,7 +1,8 @@
-$(document).ready(function () {
-                // showAllpost();
-            });
+// $(document).ready(function () {
+//                 // showAllpost();
+//             });
 
+//퀴즈버튼, 그림버튼 작동에 필요한 변수들
 let checkOpened = false;
 let checkQuizBtnOpened = false;
 const popupBtn = document.querySelector('.drawing-hide-button');
@@ -13,7 +14,7 @@ const quizSubmitBtn = document.querySelector('.quiz-submit-button');
 let quizAnswer;
 let quizPostId;
 
-
+//퀴즈 버튼 클릭했을 때 자신이 그린 그림과 내가 맞춘 그림을 제외한 랜덤한 그림을 불러오는 함수
 function makeQuiz() {
     const quizImage = document.querySelector('.quiz-image');
     fetch('/getquiz')
@@ -31,6 +32,7 @@ function makeQuiz() {
         })
 };
 
+//퀴즈 제출 버튼 클릭시 결과 알려주는 함수
 quizSubmitBtn.addEventListener('click', () => {
     let answerOption = document.getElementById('my-answer');
     const myAnswer = answerOption.options[answerOption.selectedIndex].value;
@@ -58,6 +60,7 @@ quizSubmitBtn.addEventListener('click', () => {
 
 });
 
+//그림 그리기 버튼 클릭시 퀴즈와 겹치지 않고, 캔버스만 나오게 하는 기능
 popupBtn.addEventListener('click', () => {
     if (checkOpened === false) {
         if (checkQuizBtnOpened === true) {
@@ -77,7 +80,12 @@ popupBtn.addEventListener('click', () => {
     }
 });
 
+//퀴즈 버튼 클릭시 캔버스와 겹치지 않고 퀴즈만 나오고, 일기들을 숨기는 기능
 quizBtn.addEventListener('click', () => {
+    const checkGuest = document.getElementById('welcome').valueOf().innerText.split('').slice(0, 5).join('')  //guest
+    if (checkGuest === 'guest') {
+        return alert('회원가입을 해주세요!');
+    }
    if (checkQuizBtnOpened === false) {
        if (checkOpened === true) {
            checkOpened = false;
@@ -100,46 +108,48 @@ quizBtn.addEventListener('click', () => {
    }
 });
 
-function showAllpost() {
-                $.ajax({
-                    type: "GET",
-                    url: "/allpost",
-                    data: {},
-                    success: function (response) {
-                        let posts = response['all_post']
-                        console.log(posts)
-                            for (let i = posts.length-1; i >= 0; i--)
-                            {
-                                //<img className="is-rounded" src="../static/img/pepegood.jpg">
-                                let imageurl = posts[i]['img']
-                                let text = posts[i]['comment']
-                                let date = posts[i]['date']
-                                let weather = posts[i]['weather']
+// function showAllpost() {
+//                 $.ajax({
+//                     type: "GET",
+//                     url: "/allpost",
+//                     data: {},
+//                     success: function (response) {
+//                         let posts = response['all_post']
+//                         console.log(posts)
+//                             for (let i = posts.length-1; i >= 0; i--)
+//                             {
+//                                 //<img className="is-rounded" src="../static/img/pepegood.jpg">
+//                                 let imageurl = posts[i]['img']
+//                                 let text = posts[i]['comment']
+//                                 let date = posts[i]['date']
+//                                 let weather = posts[i]['weather']
+//
+//                                 let temp_html = `
+//                                     <div class="card">
+//                                         <div class="card-image">
+//                                             <figure class="image is-4by3">
+//                                                 <img src="${imageurl}" >
+//                                             </figure>
+//                                         </div>
+//                                         <div class="card-content">
+//                                             <div class="content">
+//                                                 ${text}
+//                                                 <br>
+//                                                 <time datetime="2016-1-1">${date}</time>
+//                                                 <br>
+//                                                 <weather>${weather}</weather>
+//                                             </div>
+//                                         </div>
+//                                     </div>
+//                                     `
+//                                 $('#card-box').append(temp_html)
+//                             }
+//                     }
+//                 })
+//             }
 
-                                let temp_html = `
-                                    <div class="card">
-                                        <div class="card-image">
-                                            <figure class="image is-4by3">
-                                                <img src="${imageurl}" >
-                                            </figure>
-                                        </div>
-                                        <div class="card-content">
-                                            <div class="content">
-                                                ${text}
-                                                <br>
-                                                <time datetime="2016-1-1">${date}</time>
-                                                <br>
-                                                <weather>${weather}</weather>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    `
-                                $('#card-box').append(temp_html)
-                            }
-                    }
-                })
-            }
-//canvas
+//캔버스 그리기
+//캔버스 그리기에 필요한 변수 저장
 const canvas = document.querySelector('.canvas');
 const context = canvas.getContext('2d');
 const radioColorCtrl = document.querySelector('.radio-color-wrap');
@@ -147,14 +157,11 @@ const submitBtn = document.querySelector('.diary-submit-button');
 const penBtn = document.querySelector('.pen');
 const eraserBtn = document.querySelector('.eraser');
 const clearBtn = document.querySelector('.clear');
-
-// const imageBtn = document.querySelector('.send-image');
 let drawingMode = false;
 let drawingTool = "pen";
 let colorVal = 'black';
 
-// context.arc(100, 100, 50, 0, Math.PI * 2, false);
-
+//그리기 툴 선택 함수 = 필요에 따라 지우개, 연필로 변경, 크기 조정
 const chooseDrawingTool = (e) => {
     const toolSize = document.querySelector('#myRange').value;
     const bound = canvas.getBoundingClientRect();
@@ -174,50 +181,55 @@ const chooseDrawingTool = (e) => {
     }
 };
 
+//마우스 클릭 시 그리기 이벤트 발생
 canvas.addEventListener('mousedown', (e) => {
     drawingMode = true;
     // console.log(drawingMode);
     chooseDrawingTool(e);
 });
 
+//마우스 움직일 시 그리기 이벤트 발생
 canvas.addEventListener('mousemove', (e) => {
     if (!drawingMode) return;
     chooseDrawingTool(e);
 });
 
+//마우스 땠을 시 그리기 종료 기능
 canvas.addEventListener('mouseup', () => {
     drawingMode = false;
 });
 
+//색깔 버튼 클릭 시 색깔 바뀌게 하는 기능
 radioColorCtrl.addEventListener('click', (e) => {
     colorVal = e.target.getAttribute('data-color');
-    // console.log(colorVal);
     context.fillStyle = colorVal;
     drawingTool = "pen";
 });
 
+//연필 버튼 클릭 시 기능 펜으로 바꾸는 기능
 penBtn.addEventListener('click', () => {
     drawingTool = "pen";
 });
 
+//지우개 버튼 클릭 시 지우개로 바꾸는 기능
 eraserBtn.addEventListener('click', () => {
     drawingTool = "eraser";
 });
 
+//새로 그리기 버튼 클릭시 새로 그려주는 기능
 clearBtn.addEventListener('click', () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
 });
 
 
 //일기 포스팅(등록) API
-const url = canvas.toDataURL('image/png');
-
+//등록에 필요한 변수 지정
 let weather_give = document.getElementById('weather-select');
-// weather_give = weather_give.options[weather_give.selectedIndex].value;
 const comment_give = document.querySelector('.diary-comment');
 
-
+//내 기분 알리기 버튼 클릭 시 필요한 정보를 담아 백엔드로 전송하고 페이지 새로고침 해주는 기능
 submitBtn.addEventListener('click', () => {
+    //회원이 아닐 시(환영문구에서 문자열이 guest이면) 해당 기능을 실행하지 않음
     const checkGuest = document.getElementById('welcome').valueOf().innerText.split('').slice(0,5).join('')  //guest
     if (checkGuest==='guest'){
         return alert('회원가입을 해주세요!');
@@ -232,17 +244,15 @@ submitBtn.addEventListener('click', () => {
     if (date < 10) {
         date = `0${today.getDate()}`
     }
-
-    // let date_give = document.querySelector('.diary-date');
     let date_give = document.getElementById('date-box').value;
+    //아무 날짜도 입력하지 않고 전송 시 현재 날짜로 보내지게 하는 기능
     console.log(date_give)
     if (date_give == "") {
         date_give = `${year}-${month}-${date}`;
     }
-    console.log(date_give)
     const url = canvas.toDataURL('image/png');
-    //🔥
     let weather = weather_give.options[weather_give.selectedIndex].value;
+    //아무 기능도 입력하지 않고 전송 시 기본 기분으로 보내지게 하는 기능
     if(weather == '기분')
         weather = '😑'
     const postData = {
@@ -266,6 +276,8 @@ submitBtn.addEventListener('click', () => {
             window.location.href = '/';
         })
 });
+
+
 function log_out() {
     $.removeCookie('mytoken', {path: '/'});
     alert("로그아웃 되었습니다.")
