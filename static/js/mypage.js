@@ -1,3 +1,4 @@
+// 포스팅 삭제
 function deleteMypage(postId) {
     console.log(typeof postId);
     $.ajax({
@@ -10,7 +11,7 @@ function deleteMypage(postId) {
         }
     });
 }
-
+//쿠키삭제
 function log_out() {
     $.removeCookie('mytoken', {path: '/'});
     alert("로그아웃 되었습니다.");

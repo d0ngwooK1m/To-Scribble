@@ -13,7 +13,6 @@ const quizSubmitBtn = document.querySelector('.quiz-submit-button');
 let quizAnswer;
 let quizPostId;
 
-
 function makeQuiz() {
     const quizImage = document.querySelector('.quiz-image');
     fetch('/getquiz')
@@ -55,7 +54,6 @@ quizSubmitBtn.addEventListener('click', () => {
                 window.location.href = '/';
             })
     }
-
 });
 
 popupBtn.addEventListener('click', () => {

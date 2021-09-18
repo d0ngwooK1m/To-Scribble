@@ -10,6 +10,7 @@ import os
 
 app = Flask(__name__)
 SECRET_KEY = 'secret'
+
 oss = platform.system()
 server = 'mongodb://test:test@localhost'
 local = 'localhost'
@@ -44,7 +45,6 @@ def mainpage():
     print(all_post)
     return render_template('mainpage.html', userinfo=user_info, all_post=all_post, logincheck=loginCheck())
 
-
 @app.route('/userlogin/')
 def loginpage():
     msg = request.args.get("msg")
@@ -70,6 +70,10 @@ def mypage():
         return redirect(url_for('fail', msg="로그인 시간 만료"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
+
+# API 기능 여기서 작성해주세요!
+
+# 일기 포스팅(등록) API
 
 @app.route('/mainpage/post', methods=['POST'])
 def posting():
@@ -99,19 +103,19 @@ def api_signuppage():
     email_receive = request.form['email_give']
     duplication_check = db.users.find_one({"email": email_receive}) # 이메일 중복확인
     if duplication_check is not None:
-        return jsonify({"msg": "이메일이나 비밀번호가 잘못되었습니다. 다시 확인해주세요!"}), 400
+        return jsonify({"msg": "이메일이나 비밀번호가 잘못되었습니다. 다시 확인해주세요!"}), 400  #400은 error코드
     pw_receive = request.form['pw_give']
     # 비밀번호는 hashlib을 이용하여 해시함수로 변환하기
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     # 사진파일
     if len(request.files): # 보내준 파일이 있다면 여기를
         file = request.files["file_give"]
-        extension = file.filename.split('.')[-1] # ex) jpg
-        save_to = f'static/img/{email_receive}.{extension}'
+        extension = file.filename.split('.')[-1] # ex) 확장자 ex) jpg,gif
+        save_to = f'static/img/{email_receive}.{extension}'  # img에 email.extension으로 이름 저장!
         file.save(save_to)
         img_url = f'../static/img/{email_receive}.{extension}'
     else: # 보내준 파일이 없다면 여기를.
-        img_url = f'../static/img/pepewine.png'
+        img_url = f'../static/img/pepewine.png' # 기본이미지 설정
 
     #db 저장하기
     doc = {
@@ -119,7 +123,6 @@ def api_signuppage():
         'nickname': nickname_receive,
         'pw': pw_hash,
         'email': email_receive,
-       # 'pw_check': pw_check_receive
     }
     db.users.insert_one(doc)
     return jsonify({'msg': '회원가입을 축하드립니다!'})
@@ -156,11 +159,12 @@ def api_loginpage():
 def userinfo_mypage():
     token_receive = request.cookies.get('mytoken')
     try:
+        #로그인된 jwt 토큰 디코드하여 payload 작성
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        #로그인된 정보로 user_info 설정
         user_info = db.users.find_one({"email": payload['email']})
-
+        #user_info 정보와 함꼐 mypage.html로 전달
         return render_template('mypage.html', userinfo=user_info)
-
     except jwt.exceptions.DecodeError:
         return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
 
@@ -174,12 +178,13 @@ def delete_mypage():
     print(db.likes.remove({'post_id':postId_receive}))
     return jsonify({'msg': '삭제 완료!'})
 
+### 승준 좋아요 기능###
 @app.route('/update_like', methods=['POST'])
 def update_like():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        #payload['email']}
+        # 좋아요 수 변경
         post_id_receive = request.form["post_id_give"]
         action = request.form["action_give"] # "like" or "inlike" 좋아요 or 취소
         doc = {
