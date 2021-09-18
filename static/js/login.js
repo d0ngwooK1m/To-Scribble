@@ -1,4 +1,5 @@
 function login() {
+    //입력값 받아오기
     let email = $('#useremail-id').val()
     let pw = $('#userpw-id').val()
 
@@ -15,7 +16,6 @@ function login() {
             } else {
                 // 로그인이 안되면 에러메시지를 띄웁니다.
                 alert(response['msg']);
-
             }
         }
     })

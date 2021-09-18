@@ -9,7 +9,6 @@ import platform
 
 app = Flask(__name__)
 SECRET_KEY = 'secret'
-#app.secret_key = 'tmxmflddmfhdkanrjsk'
 
 oss = platform.system()
 server = 'mongodb://test:test@localhost'
@@ -23,10 +22,6 @@ else:
 
 db = client.To_Scribble
 
-# UPLOAD_FOLDER = 'static/uploads/'
-# ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 def loginCheck():
     if request.cookies.get('mytoken') is not None:
         return True
@@ -36,15 +31,6 @@ def loginCheck():
 # 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
 def mainpage():
-    # token_receive = request.cookies.get('mytoken')
-    # try:
-    #     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    #     user_info = db.users.find_one({"email": payload['email']})
-    #     all_post = list(db.posts.find({}, {'_id': False}))
-    #     all_post.reverse()
-    #     return render_template('mainpage.html',all_post=all_post, logincheck=loginCheck())
-    # except jwt.exceptions.DecodeError:
-    #     return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
     all_post = list(db.posts.find({}, {'_id': False}))
     for post in all_post:
         post['count'] = db.likes.count_documents({"post_id": post["postId"]})
@@ -60,7 +46,6 @@ def mainpage():
     print(all_post)
     return render_template('mainpage.html', userinfo=user_info, all_post=all_post, logincheck=loginCheck())
 
-
 @app.route('/userlogin/')
 def loginpage():
     msg = request.args.get("msg")
@@ -72,12 +57,6 @@ def signuppage():
 
 @app.route('/mypage/')
 def mypage():
-    # token_receive = request.cookies.get('mytoken')
-    # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    # my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
-    # my_posts.reverse()
-    # # return jsonify({'my_posts': my_posts})
-    # return render_template('mypage.html',my_posts=my_posts)
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -93,7 +72,7 @@ def mypage():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
 
-## 로그인 HTML을 주는 기능
+
 # API 기능 여기서 작성해주세요!
 
 # 일기 포스팅(등록) API
@@ -130,20 +109,19 @@ def api_signuppage():
     email_receive = request.form['email_give']
     duplication_check = db.users.find_one({"email": email_receive}) # 이메일 중복확인
     if duplication_check is not None:
-        return jsonify({"msg": "이메일이나 비밀번호가 잘못되었습니다. 다시 확인해주세요!"}), 400
+        return jsonify({"msg": "이메일이나 비밀번호가 잘못되었습니다. 다시 확인해주세요!"}), 400  #400은 error코드
     pw_receive = request.form['pw_give']
-  #  pw_check_receive = request.form['pw_check_give']
     # 비밀번호는 hashlib을 이용하여 해시함수로 변환하기
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     # 사진파일
     if len(request.files): # 보내준 파일이 있다면 여기를
         file = request.files["file_give"]
-        extension = file.filename.split('.')[-1] # ex) jpg
-        save_to = f'static/img/{email_receive}.{extension}'  #email이라는 이름은 img에 저장되는 이름일뿐
+        extension = file.filename.split('.')[-1] # ex) 확장자 ex) jpg,gif
+        save_to = f'static/img/{email_receive}.{extension}'  # img에 email.extension으로 이름 저장!
         file.save(save_to)
         img_url = f'../static/img/{email_receive}.{extension}'
     else: # 보내준 파일이 없다면 여기를.
-        img_url = f'../static/img/pepewine.png'
+        img_url = f'../static/img/pepewine.png' # 기본이미지 설정
 
     #db 저장하기
     doc = {
@@ -151,7 +129,6 @@ def api_signuppage():
         'nickname': nickname_receive,
         'pw': pw_hash,
         'email': email_receive,
-       # 'pw_check': pw_check_receive
     }
     db.users.insert_one(doc)
     return jsonify({'msg': '회원가입을 축하드립니다!'})
@@ -188,18 +165,14 @@ def api_loginpage():
 def userinfo_mypage():
     token_receive = request.cookies.get('mytoken')
     try:
+        #로그인된 jwt 토큰 디코드하여 payload 작성
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        #로그인된 정보로 user_info 설정
         user_info = db.users.find_one({"email": payload['email']})
-
+        #user_info 정보와 함꼐 mypage.html로 전달
         return render_template('mypage.html', userinfo=user_info)
-
     except jwt.exceptions.DecodeError:
         return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
-
-
-#    return jsonify({'msg': user_info})
-
-
 
 @app.route('/mypage/delete', methods=['POST'])
 def delete_mypage():
@@ -208,22 +181,6 @@ def delete_mypage():
     print(db.likes.remove({'post_id':postId_receive}))
     return jsonify({'msg': '삭제 완료!'})
 
-
-
-#@app.route('/mypage/showmypost', methods=['GET'])
-# def show_mypost():
-#     sample_receive = request.args.get('sample_give')
-#     my_posts = list(db.posts.find({'num': sample_receive}, {'_id': False}))
-#     print(my_posts)
-#     return jsonify({'my_posts': my_posts})
-
-
-# @app.route('/allpost', methods=['GET'])
-# def show_allpost():
-#     all_post = list(db.posts.find({}, {'_id': False}))
-#     return jsonify({'all_post': all_post})
-
-
 ### 승준 좋아요 기능###
 @app.route('/update_like', methods=['POST'])
 def update_like():
@@ -231,7 +188,6 @@ def update_like():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         # 좋아요 수 변경
-        #payload['email']}
         post_id_receive = request.form["post_id_give"]
         action = request.form["action_give"]# "like" or "inlike"
         doc = {
@@ -286,8 +242,6 @@ def Solve():
     db.solves.insert_one(doc)
     return jsonify({"result": "success"})
     #이함수를 들어왔다는거 자체가 solve라고 생각하고 코드함.
-
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
