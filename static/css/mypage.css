@@ -41,6 +41,7 @@ body{
 #profile-box {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     /*width: 90%;*/
     width: 60%;
     margin: 1% 5% 0% 5%;
@@ -55,6 +56,7 @@ body{
     flex-direction: column;
     justify-content: center;
     margin-left: 3%;
+    align-items: center;
 }
 
 .hero-body {
@@ -64,7 +66,6 @@ body{
 .card-wrapper {
     display: flex;
     flex-wrap : wrap;
-    justify-content: space-around;
     margin: 10px 100px;
 }
 
@@ -72,7 +73,7 @@ body{
     flex-shrink: 0;
     width: 380px;
     height: 430px;
-    margin: 10px;
+    margin: 10px 49.422px;
     text-align: center;
 }
 .card-image {
@@ -104,16 +105,15 @@ body{
 
 .is-sparta {
     color: #e8344e !important;
+    position: absolute;
+    bottom: 16.2%;
+    right: 27%;
 }
 .label {
     font-family: 'Staatliches', cursive;
 }
 .field-label .label {
     font-size: 1.3rem;
-}
-
-.is-static {
-    /*font-family: 'Staatliches', cursive;*/
 }
 
 .delete {
@@ -123,4 +123,5 @@ body{
 }
 .card-content {
     padding: 1.3rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
 }

@@ -3,24 +3,103 @@ $(document).ready(function () {
             });
 
 let checkOpened = false;
+let checkQuizBtnOpened = false;
 const popupBtn = document.querySelector('.drawing-hide-button');
+const quizBtn = document.querySelector('.quiz-hide-button');
 const testBox = document.querySelector('.diary');
+const quizBox = document.querySelector('.quiz');
+const cardWrapper = document.querySelector('.card-wrapper');
+const quizSubmitBtn = document.querySelector('.quiz-submit-button');
+let quizAnswer;
+let quizPostId;
 
-// const openCheck = () => {
-//     if (testBox.style.display === "none") return
-// };
-//
-// openCheck();
+
+function makeQuiz() {
+    const quizImage = document.querySelector('.quiz-image');
+    fetch('/getquiz')
+        .then((response) => response.json())
+        .then((response) => {
+            // console.log(response);
+            if (response["msg"] === "AllSolve") {
+                return alert('더 이상 풀 퀴즈가 없습니다!')
+            }
+            else if (response["msg"] === "GET") {
+                quizImage.src = response['quiz']['img'];
+                quizAnswer = response['quiz']['weather'];
+                quizPostId = response['quiz']['postId'];
+            }
+        })
+};
+
+quizSubmitBtn.addEventListener('click', () => {
+    let answerOption = document.getElementById('my-answer');
+    const myAnswer = answerOption.options[answerOption.selectedIndex].value;
+    const postData = {
+        post_id_give: quizPostId,
+    }
+    if (quizAnswer !== myAnswer) {
+        return alert("땡! 다음기회에 도전해주세요😎")
+    }
+    else {
+        fetch('/solve', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postData),
+        })
+            .then((response) => response.json())
+            .then((response) => {
+                // console.log(response);
+                alert("당신의 눈썰미에 1점 추가!😉");
+                window.location.href = '/';
+            })
+    }
+
+});
 
 popupBtn.addEventListener('click', () => {
     if (checkOpened === false) {
+        if (checkQuizBtnOpened === true) {
+            checkQuizBtnOpened = false;
+            quizBox.style.display = "none";
+            testBox.style.display = "flex";
+            cardWrapper.style.display = "flex";
+            return checkOpened = true;
+        }
         checkOpened = true;
         testBox.style.display = "flex";
+        quizBox.style.display = "none";
+        checkQuizBtnOpened = false;
     } else {
         checkOpened = false;
         testBox.style.display = "none";
     }
 });
+
+quizBtn.addEventListener('click', () => {
+   if (checkQuizBtnOpened === false) {
+       if (checkOpened === true) {
+           checkOpened = false;
+           testBox.style.display = "none";
+           quizBox.style.display = "flex";
+           cardWrapper.style.display = "none";
+           checkQuizBtnOpened = true;
+           return makeQuiz();
+       }
+       checkQuizBtnOpened = true;
+       quizBox.style.display = "flex";
+       testBox.style.display = "none";
+       checkOpened = false;
+       cardWrapper.style.display = "none";
+       return makeQuiz();
+   } else {
+       checkQuizBtnOpened = false;
+       quizBox.style.display = "none";
+       cardWrapper.style.display = "flex";
+   }
+});
+
 function showAllpost() {
                 $.ajax({
                     type: "GET",
@@ -164,8 +243,8 @@ submitBtn.addEventListener('click', () => {
     const url = canvas.toDataURL('image/png');
     //🔥
     let weather = weather_give.options[weather_give.selectedIndex].value;
-    if(weather == '날씨')
-        weather = '☹'
+    if(weather == '기분')
+        weather = '😑'
     const postData = {
         img: url,
         date: date_give,

@@ -1,4 +1,5 @@
 function deleteMypage(postId) {
+    console.log(typeof postId);
     $.ajax({
         type: 'POST',
         url: '/mypage/delete',
