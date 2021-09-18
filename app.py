@@ -6,11 +6,10 @@ import hashlib
 import datetime
 import urllib.request
 import platform
+import os
 
 app = Flask(__name__)
 SECRET_KEY = 'secret'
-#app.secret_key = 'tmxmflddmfhdkanrjsk'
-
 oss = platform.system()
 server = 'mongodb://test:test@localhost'
 local = 'localhost'
@@ -23,28 +22,13 @@ else:
 
 db = client.To_Scribble
 
-# UPLOAD_FOLDER = 'static/uploads/'
-# ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 def loginCheck():
     if request.cookies.get('mytoken') is not None:
         return True
     else:
         return False
-
-# 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
 def mainpage():
-    # token_receive = request.cookies.get('mytoken')
-    # try:
-    #     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    #     user_info = db.users.find_one({"email": payload['email']})
-    #     all_post = list(db.posts.find({}, {'_id': False}))
-    #     all_post.reverse()
-    #     return render_template('mainpage.html',all_post=all_post, logincheck=loginCheck())
-    # except jwt.exceptions.DecodeError:
-    #     return redirect(url_for("loginpage", msg="로그인 정보가 존재하지 않습니다."))
     all_post = list(db.posts.find({}, {'_id': False}))
     for post in all_post:
         post['count'] = db.likes.count_documents({"post_id": post["postId"]})
@@ -72,12 +56,6 @@ def signuppage():
 
 @app.route('/mypage/')
 def mypage():
-    # token_receive = request.cookies.get('mytoken')
-    # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    # my_posts = list(db.posts.find({'email': payload["email"]}, {'_id': False}))
-    # my_posts.reverse()
-    # # return jsonify({'my_posts': my_posts})
-    # return render_template('mypage.html',my_posts=my_posts)
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -93,10 +71,6 @@ def mypage():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
 
-## 로그인 HTML을 주는 기능
-# API 기능 여기서 작성해주세요!
-
-# 일기 포스팅(등록) API
 @app.route('/mainpage/post', methods=['POST'])
 def posting():
     token_receive = request.cookies.get('mytoken')
@@ -105,13 +79,10 @@ def posting():
 
     imageurl = result["img"]
     postID = str(random.random())[3:10]
-    # postID = '01234'
     if postID[0] == '0':
         postID = postID[1:]
     imagepath = f'../static/postimg/{postID}.jpg'
-    urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
-    ###img 저장 부분###
-
+    urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg')
     post = {
         "postId": postID, # split 해서 2번째 자리부터 가져오기 나중에처리.
         "email": payload["email"],
@@ -132,14 +103,13 @@ def api_signuppage():
     if duplication_check is not None:
         return jsonify({"msg": "이메일이나 비밀번호가 잘못되었습니다. 다시 확인해주세요!"}), 400
     pw_receive = request.form['pw_give']
-  #  pw_check_receive = request.form['pw_check_give']
     # 비밀번호는 hashlib을 이용하여 해시함수로 변환하기
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     # 사진파일
     if len(request.files): # 보내준 파일이 있다면 여기를
         file = request.files["file_give"]
         extension = file.filename.split('.')[-1] # ex) jpg
-        save_to = f'static/img/{email_receive}.{extension}'  #email이라는 이름은 img에 저장되는 이름일뿐
+        save_to = f'static/img/{email_receive}.{extension}'
         file.save(save_to)
         img_url = f'../static/img/{email_receive}.{extension}'
     else: # 보내준 파일이 없다면 여기를.
@@ -196,53 +166,34 @@ def userinfo_mypage():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
 
-
-#    return jsonify({'msg': user_info})
-
-
-
 @app.route('/mypage/delete', methods=['POST'])
 def delete_mypage():
     postId_receive = request.form['postId_give']
+    imgpath = db.posts.find_one({'postId': postId_receive})['img'][3:] #포스트 이미지 경로
+    if os.path.isfile(imgpath): # 삭제
+        os.remove(imgpath)
     db.posts.delete_one({'postId': postId_receive})
     print(db.likes.remove({'post_id':postId_receive}))
     return jsonify({'msg': '삭제 완료!'})
 
-
-
-#@app.route('/mypage/showmypost', methods=['GET'])
-# def show_mypost():
-#     sample_receive = request.args.get('sample_give')
-#     my_posts = list(db.posts.find({'num': sample_receive}, {'_id': False}))
-#     print(my_posts)
-#     return jsonify({'my_posts': my_posts})
-
-
-# @app.route('/allpost', methods=['GET'])
-# def show_allpost():
-#     all_post = list(db.posts.find({}, {'_id': False}))
-#     return jsonify({'all_post': all_post})
-
-
-### 승준 좋아요 기능###
 @app.route('/update_like', methods=['POST'])
 def update_like():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 좋아요 수 변경
         #payload['email']}
         post_id_receive = request.form["post_id_give"]
-        action = request.form["action_give"]# "like" or "inlike"
+        action = request.form["action_give"] # "like" or "inlike" 좋아요 or 취소
         doc = {
             "post_id": post_id_receive,
             "useremail": payload['email'],
         }
-        if action == "like":
+        if action == "like": # 좋아요면 db에 데이터 추가
             db.likes.insert_one(doc)
-        else:
+        else: # 싫어요면 db에서 삭제
             db.likes.delete_one(doc)
-        count = db.likes.count_documents({"post_id": post_id_receive})
+        count = db.likes.count_documents({"post_id": post_id_receive}) # 좋아요 개수 가져와서
+                                                                       # html에 뿌려준다.
         return jsonify({"result": "success", 'msg': 'updated', "count": str(count)})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("mainpage"))
@@ -255,14 +206,15 @@ def get_quiz(): #userinfo_mypage()
     posts = list(db.posts.find({}, {'_id': False}))
     ret = []
     for post in posts:
-        if (post['email'] != payload['email']) and (bool(db.solves.find_one({"postId": post["postId"], "useremail": payload['email']})) == False):
+        if (post['email'] != payload['email']) and (bool(db.solves.find_one({"post_id": post["postId"], "useremail": payload['email']})) == False):
             dic = {
                 'postId' :  post["postId"],
                 'weather' : post["weather"],
                 'img' : post['img'],
             }
             ret.append(dic)
-    print(ret)
+    for i in ret:
+        print(i)
     if len(ret) == 0:
         return jsonify({'msg': "AllSolve"})
     else:
@@ -274,7 +226,7 @@ def get_quiz(): #userinfo_mypage()
     # 0이 아니라면 그 리스트중 랜덤으로 하나 뽑아서 반환해준다.
 
 @app.route('/solve', methods=['POST'])
-def Solve():
+def Solve(): #이함수를 들어왔다는거 자체가 solve라고 생각하고 코드함. 마췃는지 틀렷는지 판별은 JS 에서..
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     post_id_receive = request.form["post_id_give"]
@@ -282,11 +234,8 @@ def Solve():
         "post_id": post_id_receive,
         "useremail": payload['email'],
     }
-    db.solves.insert_one(doc)
+    db.solves.insert_one(doc) # 맞으면 추가.
     return jsonify({"result": "success"})
-    #이함수를 들어왔다는거 자체가 solve라고 생각하고 코드함.
-
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
