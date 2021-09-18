@@ -1,7 +1,3 @@
-// $(document).ready(function () {
-//                 // showAllpost();
-//             });
-
 //퀴즈버튼, 그림버튼 작동에 필요한 변수들
 let checkOpened = false;
 let checkQuizBtnOpened = false;
@@ -13,6 +9,7 @@ const cardWrapper = document.querySelector('.card-wrapper');
 const quizSubmitBtn = document.querySelector('.quiz-submit-button');
 let quizAnswer;
 let quizPostId;
+
 
 //퀴즈 버튼 클릭했을 때 자신이 그린 그림과 내가 맞춘 그림을 제외한 랜덤한 그림을 불러오는 함수
 function makeQuiz() {
@@ -57,7 +54,6 @@ quizSubmitBtn.addEventListener('click', () => {
                 window.location.href = '/';
             })
     }
-
 });
 
 //그림 그리기 버튼 클릭시 퀴즈와 겹치지 않고, 캔버스만 나오게 하는 기능
@@ -107,46 +103,6 @@ quizBtn.addEventListener('click', () => {
        cardWrapper.style.display = "flex";
    }
 });
-
-// function showAllpost() {
-//                 $.ajax({
-//                     type: "GET",
-//                     url: "/allpost",
-//                     data: {},
-//                     success: function (response) {
-//                         let posts = response['all_post']
-//                         console.log(posts)
-//                             for (let i = posts.length-1; i >= 0; i--)
-//                             {
-//                                 //<img className="is-rounded" src="../static/img/pepegood.jpg">
-//                                 let imageurl = posts[i]['img']
-//                                 let text = posts[i]['comment']
-//                                 let date = posts[i]['date']
-//                                 let weather = posts[i]['weather']
-//
-//                                 let temp_html = `
-//                                     <div class="card">
-//                                         <div class="card-image">
-//                                             <figure class="image is-4by3">
-//                                                 <img src="${imageurl}" >
-//                                             </figure>
-//                                         </div>
-//                                         <div class="card-content">
-//                                             <div class="content">
-//                                                 ${text}
-//                                                 <br>
-//                                                 <time datetime="2016-1-1">${date}</time>
-//                                                 <br>
-//                                                 <weather>${weather}</weather>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                     `
-//                                 $('#card-box').append(temp_html)
-//                             }
-//                     }
-//                 })
-//             }
 
 //캔버스 그리기
 //캔버스 그리기에 필요한 변수 저장
@@ -279,9 +235,17 @@ submitBtn.addEventListener('click', () => {
 
 
 function log_out() {
-    $.removeCookie('mytoken', {path: '/'});
-    alert("로그아웃 되었습니다.")
-    window.location.href = "/"
+    $.ajax({
+                    type: "GET",
+                    url: "/getquiz",
+                    data: {},
+                    success: function (response) {
+                        console.log(response['quiz']);
+                    }
+                })
+    // $.removeCookie('mytoken', {path: '/'});
+    // alert("로그아웃 되었습니다.")
+    // window.location.href = "/"
 }
 
 function toggle_like(post_id) {
@@ -293,6 +257,7 @@ function toggle_like(post_id) {
     let $a_like = $(`#${post_id} a[aria-label='${"heart"}']`)
     let $i_like = $a_like.find("i")
     if ($i_like.hasClass("fa-heart-o")) {
+        //여기는 좋아요!
         $.ajax({
             type: "POST",
             url: "/update_like",

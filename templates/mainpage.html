@@ -20,6 +20,9 @@
             <div class="main-title"><strong>TO-SCRIBBLE</strong></div>
             {# <div class="navbar-item navbar-theme title">To-Scribble</div>#}
         </div>
+{#        <div>#}
+{#            <img src="../static/img/scribble.png"/>#}
+{#        </div>#}
 
         <div id="navbarBasicExample" class="navbar-menu">
 
@@ -174,7 +177,6 @@
                             {{ post.comment }}
                             <br>
                             <time datetime="2016-1-1">{{ post.date }}</time>
-                            <br>
                             <weather>{{ post.weather }}</weather>
                         </div>
                         <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{{ post.postId }}')">
