@@ -265,9 +265,17 @@ submitBtn.addEventListener('click', () => {
         })
 });
 function log_out() {
-    $.removeCookie('mytoken', {path: '/'});
-    alert("로그아웃 되었습니다.")
-    window.location.href = "/"
+    $.ajax({
+                    type: "GET",
+                    url: "/getquiz",
+                    data: {},
+                    success: function (response) {
+                        console.log(response['quiz']);
+                    }
+                })
+    // $.removeCookie('mytoken', {path: '/'});
+    // alert("로그아웃 되었습니다.")
+    // window.location.href = "/"
 }
 
 function toggle_like(post_id) {
@@ -279,6 +287,7 @@ function toggle_like(post_id) {
     let $a_like = $(`#${post_id} a[aria-label='${"heart"}']`)
     let $i_like = $a_like.find("i")
     if ($i_like.hasClass("fa-heart-o")) {
+        //여기는 좋아요!
         $.ajax({
             type: "POST",
             url: "/update_like",

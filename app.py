@@ -6,6 +6,7 @@ import hashlib
 import datetime
 import urllib.request
 import platform
+import os
 
 app = Flask(__name__)
 SECRET_KEY = 'secret'
@@ -27,8 +28,6 @@ def loginCheck():
         return True
     else:
         return False
-
-# 페이지 연결기능 여기서 작성해주세요!
 @app.route('/')
 def mainpage():
     all_post = list(db.posts.find({}, {'_id': False}))
@@ -72,10 +71,10 @@ def mypage():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("mainpage", msg="로그인 정보가 존재하지 않습니다."))
 
-
 # API 기능 여기서 작성해주세요!
 
 # 일기 포스팅(등록) API
+
 @app.route('/mainpage/post', methods=['POST'])
 def posting():
     token_receive = request.cookies.get('mytoken')
@@ -84,13 +83,8 @@ def posting():
 
     imageurl = result["img"]
     postID = '3'+str(random.random())[3:10]
-    # postID = '01234'
-    # if postID[0] == '0':
-    #     postID = postID[1:]
     imagepath = f'../static/postimg/{postID}.jpg'
-    urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg') # static 내에 postimg 폴더 있어야할듯 이거 나중에처리해주자.
-    ###img 저장 부분###
-
+    urllib.request.urlretrieve(imageurl, f'static/postimg/{postID}.jpg')
     post = {
         "postId": postID, # a+랜덤숫자배열
         "email": payload["email"],
@@ -177,6 +171,9 @@ def userinfo_mypage():
 @app.route('/mypage/delete', methods=['POST'])
 def delete_mypage():
     postId_receive = request.form['postId_give']
+    imgpath = db.posts.find_one({'postId': postId_receive})['img'][3:] #포스트 이미지 경로
+    if os.path.isfile(imgpath): # 삭제
+        os.remove(imgpath)
     db.posts.delete_one({'postId': postId_receive})
     print(db.likes.remove({'post_id':postId_receive}))
     return jsonify({'msg': '삭제 완료!'})
@@ -189,16 +186,17 @@ def update_like():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         # 좋아요 수 변경
         post_id_receive = request.form["post_id_give"]
-        action = request.form["action_give"]# "like" or "inlike"
+        action = request.form["action_give"] # "like" or "inlike" 좋아요 or 취소
         doc = {
             "post_id": post_id_receive,
             "useremail": payload['email'],
         }
-        if action == "like":
+        if action == "like": # 좋아요면 db에 데이터 추가
             db.likes.insert_one(doc)
-        else:
+        else: # 싫어요면 db에서 삭제
             db.likes.delete_one(doc)
-        count = db.likes.count_documents({"post_id": post_id_receive})
+        count = db.likes.count_documents({"post_id": post_id_receive}) # 좋아요 개수 가져와서
+                                                                       # html에 뿌려준다.
         return jsonify({"result": "success", 'msg': 'updated', "count": str(count)})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("mainpage"))
@@ -218,7 +216,8 @@ def get_quiz(): #userinfo_mypage()
                 'img' : post['img'],
             }
             ret.append(dic)
-    print(ret)
+    for i in ret:
+        print(i)
     if len(ret) == 0:
         return jsonify({'msg': "AllSolve"})
     else:
@@ -230,7 +229,7 @@ def get_quiz(): #userinfo_mypage()
     # 0이 아니라면 그 리스트중 랜덤으로 하나 뽑아서 반환해준다.
 
 @app.route('/solve', methods=['POST'])
-def Solve():
+def Solve(): #이함수를 들어왔다는거 자체가 solve라고 생각하고 코드함. 마췃는지 틀렷는지 판별은 JS 에서..
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     result = request.get_json()
@@ -239,9 +238,8 @@ def Solve():
         "post_id": post_id_receive,
         "useremail": payload['email'],
     }
-    db.solves.insert_one(doc)
+    db.solves.insert_one(doc) # 맞으면 추가.
     return jsonify({"result": "success"})
-    #이함수를 들어왔다는거 자체가 solve라고 생각하고 코드함.
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

@@ -1,13 +1,3 @@
-function showUser() {
-    $.ajax({
-        type: 'GET',
-        url: '/mypage/userinfo',
-        data: {},
-        success: function (response) {
-            // window.location.reload()
-        }
-    });
-}
 // 포스팅 삭제
 function deleteMypage(postId) {
     console.log(typeof postId);
